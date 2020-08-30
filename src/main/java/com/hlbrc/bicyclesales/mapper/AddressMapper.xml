@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IAddressMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Address">
+    <id column="adsId" jdbcType="INTEGER" property="adsid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="privince" jdbcType="VARCHAR" property="privince" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="adsDetails" jdbcType="VARCHAR" property="adsdetails" />
+    <result column="adsDefault" jdbcType="VARCHAR" property="adsdefault" />
+    <result column="adsLabel" jdbcType="VARCHAR" property="adslabel" />
+    <result column="delState" jdbcType="VARCHAR" property="delstate" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    adsId, userId, name, tel, privince, city, district, adsDetails, adsDefault, adsLabel, 
+    delState, createTime, updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from address
+    where adsId = #{adsid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from address
+    where adsId = #{adsid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Address">
+    insert into address (adsId, userId, name, 
+      tel, privince, city, 
+      district, adsDetails, adsDefault, 
+      adsLabel, delState, createTime, 
+      updateTime)
+    values (#{adsid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{privince,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{adsdetails,jdbcType=VARCHAR}, #{adsdefault,jdbcType=VARCHAR}, 
+      #{adslabel,jdbcType=VARCHAR}, #{delstate,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Address">
+    insert into address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adsid != null">
+        adsId,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="privince != null">
+        privince,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="adsdetails != null">
+        adsDetails,
+      </if>
+      <if test="adsdefault != null">
+        adsDefault,
+      </if>
+      <if test="adslabel != null">
+        adsLabel,
+      </if>
+      <if test="delstate != null">
+        delState,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adsid != null">
+        #{adsid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="privince != null">
+        #{privince,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="adsdetails != null">
+        #{adsdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="adsdefault != null">
+        #{adsdefault,jdbcType=VARCHAR},
+      </if>
+      <if test="adslabel != null">
+        #{adslabel,jdbcType=VARCHAR},
+      </if>
+      <if test="delstate != null">
+        #{delstate,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Address">
+    update address
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="privince != null">
+        privince = #{privince,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="adsdetails != null">
+        adsDetails = #{adsdetails,jdbcType=VARCHAR},
+      </if>
+      <if test="adsdefault != null">
+        adsDefault = #{adsdefault,jdbcType=VARCHAR},
+      </if>
+      <if test="adslabel != null">
+        adsLabel = #{adslabel,jdbcType=VARCHAR},
+      </if>
+      <if test="delstate != null">
+        delState = #{delstate,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where adsId = #{adsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Address">
+    update address
+    set userId = #{userid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      privince = #{privince,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      adsDetails = #{adsdetails,jdbcType=VARCHAR},
+      adsDefault = #{adsdefault,jdbcType=VARCHAR},
+      adsLabel = #{adslabel,jdbcType=VARCHAR},
+      delState = #{delstate,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where adsId = #{adsid,jdbcType=INTEGER}
+  </update>
+</mapper>

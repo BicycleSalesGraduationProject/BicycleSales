@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IParttypeMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Parttype">
+    <id column="partTypeId" jdbcType="INTEGER" property="parttypeid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="uapdateTime" jdbcType="TIMESTAMP" property="uapdatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    partTypeId, name, createTime, uapdateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from parttype
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from parttype
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Parttype">
+    insert into parttype (partTypeId, name, createTime, 
+      uapdateTime)
+    values (#{parttypeid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{uapdatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Parttype">
+    insert into parttype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parttypeid != null">
+        partTypeId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="uapdatetime != null">
+        uapdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parttypeid != null">
+        #{parttypeid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uapdatetime != null">
+        #{uapdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Parttype">
+    update parttype
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uapdatetime != null">
+        uapdateTime = #{uapdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Parttype">
+    update parttype
+    set name = #{name,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      uapdateTime = #{uapdatetime,jdbcType=TIMESTAMP}
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
+  </update>
+</mapper>

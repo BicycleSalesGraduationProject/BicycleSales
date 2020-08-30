@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 自动扫包 -->
+	<context:component-scan base-package="com.hlbrc.bicyclesales.controller" />
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+	</bean>
+	
+	<!-- 上传文件 -->  
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+	    <property name="defaultEncoding" value="utf-8"/>  
+	    <!-- 最大内存大小 -->  
+	    <property name="maxInMemorySize" value="10240"/>  
+	    <!-- 最大文件大小，-1为不限制大小 -->  
+	    <property name="maxUploadSize" value="-1"/>  
+	</bean>
+	<!-- 异常解析器 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<!-- key为指定的异常类型，值为要跳转的界面 -->
+				<prop key="java.lang.Throwable">index.jsp</prop>
+				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<mvc:annotation-driven />
+	<!-- 处理getpost请求乱码 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="utf-8" />
+				<property name="writeAcceptCharset" value="false" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+</beans>

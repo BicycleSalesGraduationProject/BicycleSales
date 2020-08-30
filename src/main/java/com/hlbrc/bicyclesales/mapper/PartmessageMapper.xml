@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IPartmessageMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Partmessage">
+    <id column="partMessageId" jdbcType="INTEGER" property="partmessageid" />
+    <result column="partTypeId" jdbcType="INTEGER" property="parttypeid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="money" jdbcType="VARCHAR" property="money" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    partMessageId, partTypeId, name, specification, money, createTime, updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from partmessage
+    where partMessageId = #{partmessageid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from partmessage
+    where partMessageId = #{partmessageid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Partmessage">
+    insert into partmessage (partMessageId, partTypeId, name, 
+      specification, money, createTime, 
+      updateTime)
+    values (#{partmessageid,jdbcType=INTEGER}, #{parttypeid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{specification,jdbcType=VARCHAR}, #{money,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Partmessage">
+    insert into partmessage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="partmessageid != null">
+        partMessageId,
+      </if>
+      <if test="parttypeid != null">
+        partTypeId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="specification != null">
+        specification,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="partmessageid != null">
+        #{partmessageid,jdbcType=INTEGER},
+      </if>
+      <if test="parttypeid != null">
+        #{parttypeid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null">
+        #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Partmessage">
+    update partmessage
+    <set>
+      <if test="parttypeid != null">
+        partTypeId = #{parttypeid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null">
+        specification = #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where partMessageId = #{partmessageid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Partmessage">
+    update partmessage
+    set partTypeId = #{parttypeid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      specification = #{specification,jdbcType=VARCHAR},
+      money = #{money,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where partMessageId = #{partmessageid,jdbcType=INTEGER}
+  </update>
+</mapper>

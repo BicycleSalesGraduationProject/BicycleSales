@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IShopcarMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Shopcar">
+    <id column="shopCarId" jdbcType="INTEGER" property="shopcarid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="bicycleId" jdbcType="INTEGER" property="bicycleid" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="total" jdbcType="DOUBLE" property="total" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    shopCarId, userId, bicycleId, num, total, createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shopcar
+    where shopCarId = #{shopcarid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from shopcar
+    where shopCarId = #{shopcarid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Shopcar">
+    insert into shopcar (shopCarId, userId, bicycleId, 
+      num, total, createTime
+      )
+    values (#{shopcarid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{total,jdbcType=DOUBLE}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Shopcar">
+    insert into shopcar
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopcarid != null">
+        shopCarId,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="bicycleid != null">
+        bicycleId,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopcarid != null">
+        #{shopcarid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="bicycleid != null">
+        #{bicycleid,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Shopcar">
+    update shopcar
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="bicycleid != null">
+        bicycleId = #{bicycleid,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=DOUBLE},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where shopCarId = #{shopcarid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Shopcar">
+    update shopcar
+    set userId = #{userid,jdbcType=INTEGER},
+      bicycleId = #{bicycleid,jdbcType=INTEGER},
+      num = #{num,jdbcType=INTEGER},
+      total = #{total,jdbcType=DOUBLE},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
+    where shopCarId = #{shopcarid,jdbcType=INTEGER}
+  </update>
+</mapper>

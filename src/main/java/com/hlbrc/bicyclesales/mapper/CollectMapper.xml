@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlbrc.bicyclesales.mapper.ICollectMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Collect">
+    <id column="collectId" jdbcType="INTEGER" property="collectid" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="bicycleId" jdbcType="INTEGER" property="bicycleid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    collectId, userId, bicycleId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from collect
+    where collectId = #{collectid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collect
+    where collectId = #{collectid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Collect">
+    insert into collect (collectId, userId, bicycleId
+      )
+    values (#{collectid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Collect">
+    insert into collect
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="collectid != null">
+        collectId,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="bicycleid != null">
+        bicycleId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="collectid != null">
+        #{collectid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="bicycleid != null">
+        #{bicycleid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Collect">
+    update collect
+    <set>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="bicycleid != null">
+        bicycleId = #{bicycleid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where collectId = #{collectid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Collect">
+    update collect
+    set userId = #{userid,jdbcType=INTEGER},
+      bicycleId = #{bicycleid,jdbcType=INTEGER}
+    where collectId = #{collectid,jdbcType=INTEGER}
+  </update>
+</mapper>
