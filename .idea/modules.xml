@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BicycleSales.iml" filepath="$PROJECT_DIR$/BicycleSales.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../YonYouNew/ncc-acbd/MovingCompany.iml" filepath="$PROJECT_DIR$/../../YonYouNew/ncc-acbd/MovingCompany.iml" />
     </modules>
   </component>
 </project>
