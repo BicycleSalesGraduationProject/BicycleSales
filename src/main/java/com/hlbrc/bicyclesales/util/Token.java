@@ -5,11 +5,11 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 public class Token {
-	/**** ÉèÖÃÁîÅÆ* @param request */
+	/**** è®¾ç½®ä»¤ç‰Œ* @param request */
 	public static void setToken(HttpServletRequest request) {
 		String sessionToken = UUID.randomUUID().toString();
 		request.getSession().setAttribute("SesToken", sessionToken);
-		System.out.println("ÁîÅÆÉèÖÃsetToken£¬ÁîÅÆ£º"+sessionToken);
+		System.out.println("ä»¤ç‰Œè®¾ç½®setTokenï¼Œä»¤ç‰Œï¼š"+sessionToken);
 	}
 	public static String getToken(HttpServletRequest request)
 	{
@@ -18,17 +18,17 @@ public class Token {
 		{
 			sessionToken = UUID.randomUUID().toString();
 			request.getSession().setAttribute("SesToken",sessionToken );
-			System.out.println("ÁîÅÆÉèÖÃgetToken£¬ÁîÅÆ£º"+sessionToken);
+			System.out.println("ä»¤ç‰Œè®¾ç½®getTokenï¼Œä»¤ç‰Œï¼š"+sessionToken);
 		}
 		return sessionToken;
 	}
-	/**** ÑéÖ¤ÊÇ·ñÎªÖØ¸´Ìá½»
+	/**** éªŒè¯æ˜¯å¦ä¸ºé‡å¤æäº¤
 	 * @param HttpServletRequest request
-	 * @return String true·ÇÖØ¸´Ìá½»,falseÖØ¸´Ìá½»,error·Ç·¨²Ù×÷
+	 * @return String trueéé‡å¤æäº¤,falseé‡å¤æäº¤,erroréæ³•æ“ä½œ
 	 */
 	public static String validToken(HttpServletRequest request){
 		String sessionToken = (String)request.getSession().getAttribute("SesToken");
-		System.out.println("Ğ§ÑéÁîÅÆ£¬µ±Ç°ÁîÅÆ£º"+sessionToken);
+		System.out.println("æ•ˆéªŒä»¤ç‰Œï¼Œå½“å‰ä»¤ç‰Œï¼š"+sessionToken);
 		String requestToken = request.getParameter("SesToken");
 		if(null == sessionToken  || "null".equals(sessionToken)){
 			sessionToken = "";
@@ -38,19 +38,19 @@ public class Token {
 			requestToken = "";
 		}
 		if(sessionToken.equals(requestToken)){
-			//·µ»ØÇ°Ò»¶¨ÒªÖØÖÃsessionÖĞµÄSesToken
+			//è¿”å›å‰ä¸€å®šè¦é‡ç½®sessionä¸­çš„SesToken
 			String my_take = UUID.randomUUID().toString();
 			request.getSession().setAttribute("SesToken",my_take);
-			System.out.println("Ğ§ÑéÁîÅÆ£º·ÇÖØ¸´Ìá½»£¬ÁîÅÆ£º"+my_take);
-			//·ÇÖØ¸´Ìá½»
+			System.out.println("æ•ˆéªŒä»¤ç‰Œï¼šéé‡å¤æäº¤ï¼Œä»¤ç‰Œï¼š"+my_take);
+			//éé‡å¤æäº¤
 			return "true";
 		}
 		else{
-			//·µ»ØÇ°Ò»¶¨ÒªÖØÖÃsessionÖĞµÄSesToken
+			//è¿”å›å‰ä¸€å®šè¦é‡ç½®sessionä¸­çš„SesToken
 			String my_take = UUID.randomUUID().toString();
 			request.getSession().setAttribute("SesToken",my_take);
-			//ÖØ¸´Ìá½»
-			System.out.println("Ğ§ÑéÁîÅÆ£ºÖØ¸´Ìá½»£¬ÁîÅÆ£º"+my_take);
+			//é‡å¤æäº¤
+			System.out.println("æ•ˆéªŒä»¤ç‰Œï¼šé‡å¤æäº¤ï¼Œä»¤ç‰Œï¼š"+my_take);
 			return "false";
 		}
 	}

@@ -19,7 +19,7 @@
   </listener>
 
   <welcome-file-list>
-    <welcome-file>index.do</welcome-file>
+    <welcome-file>login.do</welcome-file>
   </welcome-file-list>
   <!-- 过滤器配置 -->
   <filter>

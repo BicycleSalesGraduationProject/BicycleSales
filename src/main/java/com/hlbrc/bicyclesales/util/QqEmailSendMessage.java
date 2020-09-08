@@ -22,34 +22,38 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.mail.HtmlEmail;
 
 public class QqEmailSendMessage {
 	/**
-	 * ´¿ÎÄ±¾
+	 * çº¯æ–‡æœ¬
 	 * @return
 	 */
-	public static boolean sendEmail(String receiver){
+	public static boolean sendEmail(String receiver,HttpServletRequest request){
 	    try {
-	        //´´½¨ÍøÒ³ÓÊÏä¶ÔÏó
+	        //åˆ›å»ºç½‘é¡µé‚®ç®±å¯¹è±¡
 		    HtmlEmail email=new HtmlEmail();
-		    //»ù±¾ÉèÖÃ
+		    //åŸºæœ¬è®¾ç½®
 		    email.setDebug(true);
-		    //ÉèÖÃÎªQQÓÊÏä×÷Îª·¢ËÍÖ÷ÓÊÏä
+		    //è®¾ç½®ä¸ºQQé‚®ç®±ä½œä¸ºå‘é€ä¸»é‚®ç®±
 		    email.setHostName("SMTP.qq.com");
 		    email.setSmtpPort(587);
-		    //qqÓÊÏäµÄÑéÖ¤ĞÅÏ¢
+		    //qqé‚®ç®±çš„éªŒè¯ä¿¡æ¯
 		    email.setAuthentication("hlbrc.diplomaproject@foxmail.com","uhygapoqnfmydjjd");
-		    //ÉèÖÃÓÊ¼ş·¢ËÍÈË
+		    //è®¾ç½®é‚®ä»¶å‘é€äºº
 		    email.setFrom("hlbrc.diplomaproject@foxmail.com");
-		    //ÉèÖÃÓÊ¼ş½ÓÊÕÈË
+		    //è®¾ç½®é‚®ä»¶æ¥æ”¶äºº
 		    email.addTo(receiver);
-		    //ÉèÖÃ·¢ËÍµÄÄÚÈİ
-		    email.setContent("´ó¸ç£¬ÎÒÏëÄãÁË£¬ÄãÏëÎÒÃ»£¿", "text/html;charset=UTF-8");
-		    //ÉèÖÃÓÊÏä±êÌâ
-		    email.setSubject("»áÔ±¹ÜÀíÏµÍ³");
-		    //Ö´ĞĞÓÊ¼ş·¢ËÍ
+		    int mobile_code1 = (int)((Math.random()*9+1)*100000);
+		    String mobile_code = mobile_code1+"";
+		    request.getSession().setAttribute("appEmailVerifyCode", mobile_code);
+		    //è®¾ç½®å‘é€çš„å†…å®¹
+		    email.setContent("æ‚¨çš„éªŒè¯ç æ˜¯ï¼š" + mobile_code + "ã€‚è¯·ä¸è¦æŠŠéªŒè¯ç æ³„éœ²ç»™å…¶ä»–äººã€‚", "text/html;charset=UTF-8");
+		    //è®¾ç½®é‚®ç®±æ ‡é¢˜
+		    email.setSubject("ä¼šå‘˜ç®¡ç†ç³»ç»Ÿ");
+		    //æ‰§è¡Œé‚®ä»¶å‘é€
 	        System.err.println(email.send());
 	        return true;
 	    } catch (Exception e) {
@@ -60,86 +64,86 @@ public class QqEmailSendMessage {
 
 	
 	/**
-	 * Éú³ÉÒ»·İ±¾µØµÄÓÊ¼ş
+	 * ç”Ÿæˆä¸€ä»½æœ¬åœ°çš„é‚®ä»¶
 	 * @param args
 	 * @throws MessagingException 
 	 * @throws IOException 
 	 */
 	public static boolean setCon(String replay) {
 		try {
-		    //»·¾³
+		    //ç¯å¢ƒ
 		    Session session = Session.getDefaultInstance(new Properties());
-		    //ÓÊ¼ş
+		    //é‚®ä»¶
 		    MimeMessage msg = new MimeMessage(session);
 		    msg.addHeader("X-Mailer","Microsoft Outlook Express 6.00.2900.2869");
-		    //ÉèÖÃÖ÷Ìâ
-		    msg.setSubject("Í¨Öª");
-		    //·¢¼şÈË£¬×¢ÒâÖĞÎÄµÄ´¦Àí
-		    msg.setFrom(new InternetAddress("\"" + MimeUtility.encodeText("»áÔ±¹ÜÀíÏµÍ³") + "\"<hlbrc.diplomaproject@foxmail.com>"));
-		    //ÉèÖÃÓÊ¼ş»Ø¸´ÈË
+		    //è®¾ç½®ä¸»é¢˜
+		    msg.setSubject("é€šçŸ¥");
+		    //å‘ä»¶äººï¼Œæ³¨æ„ä¸­æ–‡çš„å¤„ç†
+		    msg.setFrom(new InternetAddress("\"" + MimeUtility.encodeText("ä¼šå‘˜ç®¡ç†ç³»ç»Ÿ") + "\"<hlbrc.diplomaproject@foxmail.com>"));
+		    //è®¾ç½®é‚®ä»¶å›å¤äºº
 		    msg.setReplyTo(new Address[]{new InternetAddress(replay)});
-		    //Õû·âÓÊ¼şµÄMINEÏûÏ¢Ìå
-		    MimeMultipart msgMultipart = new MimeMultipart("alternative");//»ìºÏµÄ×éºÏ¹ØÏµ
-		    //ÉèÖÃÓÊ¼şµÄMINEÏûÏ¢Ìå
+		    //æ•´å°é‚®ä»¶çš„MINEæ¶ˆæ¯ä½“
+		    MimeMultipart msgMultipart = new MimeMultipart("alternative");//æ··åˆçš„ç»„åˆå…³ç³»
+		    //è®¾ç½®é‚®ä»¶çš„MINEæ¶ˆæ¯ä½“
 		    msg.setContent(msgMultipart);
-		    //ÕıÎÄÄÚÈİ
+		    //æ­£æ–‡å†…å®¹
 		    MimeBodyPart content = new MimeBodyPart();
-		    //°ÑÄÚÈİ¼ÓÈëµ½ MINEÏûÏ¢ÌåÖĞ
+		    //æŠŠå†…å®¹åŠ å…¥åˆ° MINEæ¶ˆæ¯ä½“ä¸­
 		    msgMultipart.addBodyPart(content);
-		    //ÕıÎÄ£¨Í¼Æ¬ºÍÎÄ×Ö²¿·Ö£©
-		    //"related"¿ÉÒÔĞ¯´ø¸÷ÖÖ¸½¼şÍâ£¬»¹¿ÉÒÔ½«ÆäËüÄÚÈİÒÔÄÚÇ¶×ÊÔ´µÄ·½Ê½´æ´¢ÔÚÓÊ¼şÖĞ
+		    //æ­£æ–‡ï¼ˆå›¾ç‰‡å’Œæ–‡å­—éƒ¨åˆ†ï¼‰
+		    //"related"å¯ä»¥æºå¸¦å„ç§é™„ä»¶å¤–ï¼Œè¿˜å¯ä»¥å°†å…¶å®ƒå†…å®¹ä»¥å†…åµŒèµ„æºçš„æ–¹å¼å­˜å‚¨åœ¨é‚®ä»¶ä¸­
 		    MimeMultipart bodyMultipart  = new MimeMultipart("alternative");
-		    //ÉèÖÃÄÚÈİÎªÕıÎÄ
+		    //è®¾ç½®å†…å®¹ä¸ºæ­£æ–‡
 		    content.setContent(bodyMultipart);
-		    //html´úÂë²¿·Ö
+		    //htmlä»£ç éƒ¨åˆ†
 		    MimeBodyPart htmlPart = new MimeBodyPart();
-		    //ÕıÎÄÌí¼ÓÍ¼Æ¬ºÍhtml´úÂë
+		    //æ­£æ–‡æ·»åŠ å›¾ç‰‡å’Œhtmlä»£ç 
 		    bodyMultipart.addBodyPart(htmlPart);
-		    //htmlÖĞÇ¶Ì×µÄÍ¼Æ¬²¿·Ö
+		    //htmlä¸­åµŒå¥—çš„å›¾ç‰‡éƒ¨åˆ†
 		    MimeBodyPart imgPart = new MimeBodyPart();
-		    //ËµÃ÷htmlÖĞµÄimg±êÇ©µÄsrc£¬ÒıÓÃµÄÊÇ´ËÍ¼Æ¬
+		    //è¯´æ˜htmlä¸­çš„imgæ ‡ç­¾çš„srcï¼Œå¼•ç”¨çš„æ˜¯æ­¤å›¾ç‰‡
 		    imgPart.setHeader("Content-Location", "/cgi-bin/viewfile?f=CBC89A0D66C7B22374804C974FDFC907EF370F9D6EC9090C33587236FB1E23EA760B6E46F7A2B610B5988E9FDCE9EB81B6674E8EAC666B8577607D802586BD81423B0B14A6588A2567925300D680382641FCBAC2BCFA752EB4DB01BB52468F15&mailid=ZL3410-oIyeOGpFWXZ%7EUglWBMuRTa7&sid=7MBfpPZ7Qm1zazBv&net=58682980");
 			String strHtml="<div class=\"WordSection1\">\r\n" + 
 					"			<div style=\"height: 330px;\">\r\n" + 
-					"				<p>ÄãºÃ£º</p>\r\n" + 
-					"				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ÎÒºÃÄÑÑ½£¡</p>\r\n" + 
+					"				<p>ä½ å¥½ï¼š</p>\r\n" + 
+					"				<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;æˆ‘å¥½éš¾å‘€ï¼</p>\r\n" + 
 					"			</div>\r\n" + 
 					"			<div align=\"right\">\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"text-align:right\"><b><span style=\"font-size:13.5pt;font-family:ºÚÌå;color:gray\">»áÔ±¹ÜÀíÏµÍ³</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><b><span style=\"font-size:13.5pt;font-family:ºÚÌå;color:gray\">Ãñº½ABUÔËÓª½»¸¶²¿</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><b><span style=\"font-size:13.5pt;font-family:ºÚÌå;color:gray\">ÖĞÑë´ó¿Í»§ÊÂÒµ±¾²¿</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:&quot;Î¢ÈíÑÅºÚ&quot;,sans-serif;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><b><span style=\"font-size:13.5pt;font-family:ºÚÌå;color:gray\">ÓÃÓÑÍøÂç¿Æ¼¼¹É·İÓĞÏŞ¹«Ë¾</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span style=\"font-size:10.0pt;font-family:ºÚÌå;color:gray\">µØÖ·£º<span onmouseover=\"QMReadMail.showLocationTip(this)\" class=\"readmail_locationTip\" onmouseout=\"QMReadMail.hideLocationTip(this)\" over=\"0\" style=\"z-index: auto;\">±±¾©ÊĞ³¯ÑôÇø½ğÕµÂ·Ãñº½ÇåËãÖĞĞÄ×İÊ®¶şÂ·</span><span lang=\"EN-US\">8</span>ºÅÂ¥<span lang=\"EN-US\">B</span>×ù<span lang=\"EN-US\">2</span>²ã</span><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:gray\">&nbsp;</span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span style=\"font-size:10.0pt;font-family:ºÚÌå;color:gray\">ÓÊÏä£º</span><u><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:ºÚÌå;color:blue\"><a href=\"mailto:zhangyu18@yonyou.com\" rel=\"noopener\" target=\"_blank\"><span style=\"color:#0563C1\">zhangyu18@yonyou.com</span></a></span></u><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:gray\">&nbsp;</span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span style=\"font-size:10.0pt;font-family:ºÚÌå;color:gray\">µç»°£º<span lang=\"EN-US\"><span style=\"border-bottom:1px dashed #ccc;z-index:1\" t=\"7\" onclick=\"return false;\" data=\"010-86482538\">010-86482538</span> </span>\r\n" + 
-					"					</span><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:gray\">&nbsp;</span><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:ºÚÌå;color:gray\"> <span style=\"border-bottom: 1px dashed rgb(204, 204, 204); z-index: 1; position: static;\" t=\"7\" onclick=\"return false;\" data=\"15540061217\" isout=\"1\">15540061217</span></span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt;\"><span style=\"font-size:10.0pt;font-family:ºÚÌå;color:gray\">ÍøÖ·£º<span lang=\"EN-US\"><a href=\"http://www.yonyou.com/\" rel=\"noopener\" target=\"_blank\"><span style=\"color:purple\">www.yonyou.com</span></a>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"text-align:right\"><b><span style=\"font-size:13.5pt;font-family:é»‘ä½“;color:gray\">ä¼šå‘˜ç®¡ç†ç³»ç»Ÿ</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><b><span style=\"font-size:13.5pt;font-family:é»‘ä½“;color:gray\">æ°‘èˆªABUè¿è¥äº¤ä»˜éƒ¨</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><b><span style=\"font-size:13.5pt;font-family:é»‘ä½“;color:gray\">ä¸­å¤®å¤§å®¢æˆ·äº‹ä¸šæœ¬éƒ¨</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:&quot;å¾®è½¯é›…é»‘&quot;,sans-serif;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><b><span style=\"font-size:13.5pt;font-family:é»‘ä½“;color:gray\">ç”¨å‹ç½‘ç»œç§‘æŠ€è‚¡ä»½æœ‰é™å…¬å¸</span></b><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span style=\"font-size:10.0pt;font-family:é»‘ä½“;color:gray\">åœ°å€ï¼š<span onmouseover=\"QMReadMail.showLocationTip(this)\" class=\"readmail_locationTip\" onmouseout=\"QMReadMail.hideLocationTip(this)\" over=\"0\" style=\"z-index: auto;\">åŒ—äº¬å¸‚æœé˜³åŒºé‡‘ç›è·¯æ°‘èˆªæ¸…ç®—ä¸­å¿ƒçºµåäºŒè·¯</span><span lang=\"EN-US\">8</span>å·æ¥¼<span lang=\"EN-US\">B</span>åº§<span lang=\"EN-US\">2</span>å±‚</span><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:gray\">&nbsp;</span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span style=\"font-size:10.0pt;font-family:é»‘ä½“;color:gray\">é‚®ç®±ï¼š</span><u><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:é»‘ä½“;color:blue\"><a href=\"mailto:zhangyu18@yonyou.com\" rel=\"noopener\" target=\"_blank\"><span style=\"color:#0563C1\">zhangyu18@yonyou.com</span></a></span></u><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:gray\">&nbsp;</span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span style=\"font-size:10.0pt;font-family:é»‘ä½“;color:gray\">ç”µè¯ï¼š<span lang=\"EN-US\"><span style=\"border-bottom:1px dashed #ccc;z-index:1\" t=\"7\" onclick=\"return false;\" data=\"010-86482538\">010-86482538</span> </span>\r\n" + 
+					"					</span><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:gray\">&nbsp;</span><span lang=\"EN-US\" style=\"font-size:10.0pt;font-family:é»‘ä½“;color:gray\"> <span style=\"border-bottom: 1px dashed rgb(204, 204, 204); z-index: 1; position: static;\" t=\"7\" onclick=\"return false;\" data=\"15540061217\" isout=\"1\">15540061217</span></span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt;\"><span style=\"font-size:10.0pt;font-family:é»‘ä½“;color:gray\">ç½‘å€ï¼š<span lang=\"EN-US\"><a href=\"http://www.yonyou.com/\" rel=\"noopener\" target=\"_blank\"><span style=\"color:purple\">www.yonyou.com</span></a>\r\n" + 
 					"					</span>\r\n" + 
-					"					</span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><o:p>&nbsp;</o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:ËÎÌå;color:black\"><img border=\"0\" width=\"349\" height=\"50\" style=\"width:3.6333in;height:.6333in;float: right ;\" id=\"_x0000_i1025\" src=\"/cgi-bin/viewfile?f=CBC89A0D66C7B22374804C974FDFC907EF370F9D6EC9090C33587236FB1E23EA760B6E46F7A2B610B5988E9FDCE9EB81B6674E8EAC666B8577607D802586BD81423B0B14A6588A2567925300D680382641FCBAC2BCFA752EB4DB01BB52468F15&mailid=ZL3410-oIyeOGpFWXZ%7EUglWBMuRTa7&sid=7MBfpPZ7Qm1zazBv&net=58682980\"><o:p></o:p></span></p>\r\n" + 
-					"				<p class=\"MsoNormal\" align=\"left\" style=\"text-align:left\"><span lang=\"EN-US\" style=\"font-size:12.0pt;font-family:ËÎÌå\"><o:p>&nbsp;</o:p></span></p>\r\n" + 
+					"					</span><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><o:p>&nbsp;</o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" style=\"line-height:15.75pt\"><span lang=\"EN-US\" style=\"font-size:13.5pt;font-family:å®‹ä½“;color:black\"><img border=\"0\" width=\"349\" height=\"50\" style=\"width:3.6333in;height:.6333in;float: right ;\" id=\"_x0000_i1025\" src=\"/cgi-bin/viewfile?f=CBC89A0D66C7B22374804C974FDFC907EF370F9D6EC9090C33587236FB1E23EA760B6E46F7A2B610B5988E9FDCE9EB81B6674E8EAC666B8577607D802586BD81423B0B14A6588A2567925300D680382641FCBAC2BCFA752EB4DB01BB52468F15&mailid=ZL3410-oIyeOGpFWXZ%7EUglWBMuRTa7&sid=7MBfpPZ7Qm1zazBv&net=58682980\"><o:p></o:p></span></p>\r\n" + 
+					"				<p class=\"MsoNormal\" align=\"left\" style=\"text-align:left\"><span lang=\"EN-US\" style=\"font-size:12.0pt;font-family:å®‹ä½“\"><o:p>&nbsp;</o:p></span></p>\r\n" + 
 					"			</div>\r\n" + 
 					"		</div>";
-			 //html´úÂë
+			 //htmlä»£ç 
 		    htmlPart.setContent(strHtml,"text/html;charset=utf-8");
 		
-		    //Éú³ÉÎÄ¼şÓÊ¼ş
+		    //ç”Ÿæˆæ–‡ä»¶é‚®ä»¶
 		    msg.saveChanges();
 		    File file = new File("C:/myChattingRecords/QqEmail/demo.eml");
 		    if(!file.exists()){
-			    //ÏÈµÃµ½ÎÄ¼şµÄÉÏ¼¶Ä¿Â¼,²¢´´½¨ÉÏ¼¶Ä¿Â¼,ÔÚ´´½¨ÎÄ¼ş
+			    //å…ˆå¾—åˆ°æ–‡ä»¶çš„ä¸Šçº§ç›®å½•,å¹¶åˆ›å»ºä¸Šçº§ç›®å½•,åœ¨åˆ›å»ºæ–‡ä»¶
 				if(!file.getParentFile().mkdir()) {
 					file.getParentFile().getParentFile().mkdir();
 				}
 			    try {
-			        //´´½¨ÎÄ¼ş
+			        //åˆ›å»ºæ–‡ä»¶
 			        file.createNewFile();
 			    } catch (IOException e) {
 			        e.printStackTrace();
 			    }
 			}
-		    //Êä³ö
+		    //è¾“å‡º
 		    OutputStream os = new FileOutputStream(file);
 		    msg.writeTo(os);
 		    os.close();
@@ -150,65 +154,65 @@ public class QqEmailSendMessage {
 	    return false;
 		}
 	/**
-	 * ·¢ËÍ¸´ÔÓÓÊ¼ş
+	 * å‘é€å¤æ‚é‚®ä»¶
 	 * @param args
 	 * @throws FileNotFoundException
 	 * @throws MessagingException
 	 */
 	public static boolean sendComplexEmail(String receiver) {
 		try {
-		    // ÊôĞÔ¶ÔÏó
+		    // å±æ€§å¯¹è±¡
 		    Properties properties = new Properties();
-		    // ¿ªÆôdebugµ÷ÊÔ £¬´òÓ¡ĞÅÏ¢
+		    // å¼€å¯debugè°ƒè¯• ï¼Œæ‰“å°ä¿¡æ¯
 		    properties.setProperty("mail.debug", "true");
-		    // ·¢ËÍ·şÎñÆ÷ĞèÒªÉí·İÑéÖ¤
+		    // å‘é€æœåŠ¡å™¨éœ€è¦èº«ä»½éªŒè¯
 		    properties.setProperty("mail.smtp.auth", "true");
-		    // ·¢ËÍ·şÎñÆ÷¶Ë¿Ú£¬¿ÉÒÔ²»ÉèÖÃ£¬Ä¬ÈÏÊÇ25
+		    // å‘é€æœåŠ¡å™¨ç«¯å£ï¼Œå¯ä»¥ä¸è®¾ç½®ï¼Œé»˜è®¤æ˜¯25
 		    properties.setProperty("mail.smtp.port", "25");
-		    // ·¢ËÍÓÊ¼şĞ­ÒéÃû³Æ
+		    // å‘é€é‚®ä»¶åè®®åç§°
 		    properties.setProperty("mail.transport.protocol", "smtp");
-		    // ÉèÖÃÓÊ¼ş·şÎñÆ÷Ö÷»úÃû
+		    // è®¾ç½®é‚®ä»¶æœåŠ¡å™¨ä¸»æœºå
 		    properties.setProperty("mail.host", "smtp.qq.com");
-		    // »·¾³ĞÅÏ¢
+		    // ç¯å¢ƒä¿¡æ¯
 		    Session session = Session.getInstance(properties, new Authenticator() {
 		        @Override
 		        protected PasswordAuthentication getPasswordAuthentication() {
-		            // ÔÚsessionÖĞÉèÖÃÕË»§ĞÅÏ¢£¬Transport·¢ËÍÓÊ¼şÊ±»áÊ¹ÓÃ
+		            // åœ¨sessionä¸­è®¾ç½®è´¦æˆ·ä¿¡æ¯ï¼ŒTransportå‘é€é‚®ä»¶æ—¶ä¼šä½¿ç”¨
 		            return new PasswordAuthentication("hlbrc.diplomaproject@foxmail.com","uhygapoqnfmydjjd");
 		        }
 		    });
 		
-		    //¶ÁÈ¡±¾µØÓÊ¼ş
+		    //è¯»å–æœ¬åœ°é‚®ä»¶
 		    Message message = new MimeMessage(session, new FileInputStream(new File("C:/myChattingRecords/QqEmail/demo.eml")));
 //		    message.addHeader("X-Mailer","Microsoft Outlook Express 6.00.2900.2869");
-		    //·¢ËÍÓÊ¼ş
+		    //å‘é€é‚®ä»¶
 		    Transport.send(message, InternetAddress.parse(receiver));
 		    return true;
 	    } catch(SendFailedException e) {
-	    	System.err.println(e.getMessage()+":Çë¼ì²éÊÕ¼şÈËµØÖ·ÊÇ·ñÕıÈ·£¡");
+	    	System.err.println(e.getMessage()+":è¯·æ£€æŸ¥æ”¶ä»¶äººåœ°å€æ˜¯å¦æ­£ç¡®ï¼");
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    }
 	    return false;
 	}
 	/**
-	 *  ²âÊÔqqÓÊÏä·¢ËÍ
+	 *  æµ‹è¯•qqé‚®ç®±å‘é€
 	 * @param zch
 	 */
 	public static void main(String[] args) {
 		String testPople = "1529827884@qq.com";
 //	    boolean b = sendEmail(testPople);
-//	    System.out.println("·¢ËÍ"+(b?"³É¹¦":"Ê§°Ü"));
+//	    System.out.println("å‘é€"+(b?"æˆåŠŸ":"å¤±è´¥"));
 
 		boolean A = setCon(testPople);
 		System.out.println(new Date());
-		System.err.println(A?"Email´´½¨³É¹¦":"Email´´½¨Ê§°Ü");
+		System.err.println(A?"Emailåˆ›å»ºæˆåŠŸ":"Emailåˆ›å»ºå¤±è´¥");
 		if(A) {
 			A = sendComplexEmail(testPople);
-			System.err.println("·¢ËÍ"+(A?"Email³É¹¦":"EmailÊ§°Ü"));
+			System.err.println("å‘é€"+(A?"EmailæˆåŠŸ":"Emailå¤±è´¥"));
 		}
 		else {
-			System.err.println("·¢ËÍEmailÊ§°Ü");
+			System.err.println("å‘é€Emailå¤±è´¥");
 		}
 	}
 }
