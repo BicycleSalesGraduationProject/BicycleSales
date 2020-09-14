@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hlbrc.bicyclesales.mapper.IColourMapper">
-  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Colour">
-    <id column="colourId" jdbcType="INTEGER" property="colourid" />
-    <result column="bicycleId" jdbcType="INTEGER" property="bicycleid" />
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IFeedBackMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.FeedBack">
+    <id column="feedbackId" jdbcType="INTEGER" property="feedbackid" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="state" jdbcType="VARCHAR" property="state" />
-    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="issue" jdbcType="VARCHAR" property="issue" />
+    <result column="voiceMessage" jdbcType="VARCHAR" property="voicemessage" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,124 +68,118 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    colourId, bicycleId, name, code, state, createTime, updateTime
+    feedbackId, name, tel, email, issue, voiceMessage
   </sql>
-  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.ColourExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.FeedBackExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from colour
+    from feedback
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+    <if test="pageIndex != null and pageSize != null and pageSize != 0">
+          limit #{pageIndex},#{pageSize}
+      </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from colour
-    where colourId = #{colourid,jdbcType=INTEGER}
+    from feedback
+    where feedbackId = #{feedbackid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from colour
-    where colourId = #{colourid,jdbcType=INTEGER}
+    delete from feedback
+    where feedbackId = #{feedbackid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.ColourExample">
-    delete from colour
+  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.FeedBackExample">
+    delete from feedback
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    insert into colour (colourId, bicycleId, name, 
-      code, state, createTime, 
-      updateTime)
-    values (#{colourid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{code,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.FeedBack">
+    insert into feedback (feedbackId, name, tel, 
+      email, issue, voiceMessage
+      )
+    values (#{feedbackid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, #{voicemessage,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    insert into colour
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.FeedBack">
+    insert into feedback
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="colourid != null">
-        colourId,
-      </if>
-      <if test="bicycleid != null">
-        bicycleId,
+      <if test="feedbackid != null">
+        feedbackId,
       </if>
       <if test="name != null">
         name,
       </if>
-      <if test="code != null">
-        code,
+      <if test="tel != null">
+        tel,
       </if>
-      <if test="state != null">
-        state,
+      <if test="email != null">
+        email,
       </if>
-      <if test="createtime != null">
-        createTime,
+      <if test="issue != null">
+        issue,
       </if>
-      <if test="updatetime != null">
-        updateTime,
+      <if test="voicemessage != null">
+        voiceMessage,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="colourid != null">
-        #{colourid,jdbcType=INTEGER},
-      </if>
-      <if test="bicycleid != null">
-        #{bicycleid,jdbcType=INTEGER},
+      <if test="feedbackid != null">
+        #{feedbackid,jdbcType=INTEGER},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
       </if>
-      <if test="state != null">
-        #{state,jdbcType=VARCHAR},
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
       </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
+      <if test="issue != null">
+        #{issue,jdbcType=VARCHAR},
       </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=TIMESTAMP},
+      <if test="voicemessage != null">
+        #{voicemessage,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.ColourExample" resultType="java.lang.Long">
-    select count(*) from colour
+  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.FeedBackExample" resultType="java.lang.Long">
+    select count(*) from feedback
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update colour
+    update feedback
     <set>
-      <if test="record.colourid != null">
-        colourId = #{record.colourid,jdbcType=INTEGER},
-      </if>
-      <if test="record.bicycleid != null">
-        bicycleId = #{record.bicycleid,jdbcType=INTEGER},
+      <if test="record.feedbackid != null">
+        feedbackId = #{record.feedbackid,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.code != null">
-        code = #{record.code,jdbcType=VARCHAR},
+      <if test="record.tel != null">
+        tel = #{record.tel,jdbcType=VARCHAR},
       </if>
-      <if test="record.state != null">
-        state = #{record.state,jdbcType=VARCHAR},
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
       </if>
-      <if test="record.createtime != null">
-        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      <if test="record.issue != null">
+        issue = #{record.issue,jdbcType=VARCHAR},
       </if>
-      <if test="record.updatetime != null">
-        updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      <if test="record.voicemessage != null">
+        voiceMessage = #{record.voicemessage,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -194,50 +187,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update colour
-    set colourId = #{record.colourid,jdbcType=INTEGER},
-      bicycleId = #{record.bicycleid,jdbcType=INTEGER},
+    update feedback
+    set feedbackId = #{record.feedbackid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      code = #{record.code,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=VARCHAR},
-      createTime = #{record.createtime,jdbcType=TIMESTAMP},
-      updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
+      tel = #{record.tel,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      issue = #{record.issue,jdbcType=VARCHAR},
+      voiceMessage = #{record.voicemessage,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    update colour
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.FeedBack">
+    update feedback
     <set>
-      <if test="bicycleid != null">
-        bicycleId = #{bicycleid,jdbcType=INTEGER},
-      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
       </if>
-      <if test="state != null">
-        state = #{state,jdbcType=VARCHAR},
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="createtime != null">
-        createTime = #{createtime,jdbcType=TIMESTAMP},
+      <if test="issue != null">
+        issue = #{issue,jdbcType=VARCHAR},
       </if>
-      <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      <if test="voicemessage != null">
+        voiceMessage = #{voicemessage,jdbcType=VARCHAR},
       </if>
     </set>
-    where colourId = #{colourid,jdbcType=INTEGER}
+    where feedbackId = #{feedbackid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    update colour
-    set bicycleId = #{bicycleid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      state = #{state,jdbcType=VARCHAR},
-      createTime = #{createtime,jdbcType=TIMESTAMP},
-      updateTime = #{updatetime,jdbcType=TIMESTAMP}
-    where colourId = #{colourid,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.FeedBack">
+    update feedback
+    set name = #{name,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      issue = #{issue,jdbcType=VARCHAR},
+      voiceMessage = #{voicemessage,jdbcType=VARCHAR}
+    where feedbackId = #{feedbackid,jdbcType=INTEGER}
   </update>
 </mapper>

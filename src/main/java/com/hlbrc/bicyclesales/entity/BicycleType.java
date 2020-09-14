@@ -2,7 +2,7 @@ package com.hlbrc.bicyclesales.entity;
 
 import java.util.Date;
 
-public class Bicycletype {
+public class BicycleType {
     private Integer bicycletypeid;
 
     private String name;

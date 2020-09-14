@@ -2,7 +2,7 @@ package com.hlbrc.bicyclesales.entity;
 
 import java.util.Date;
 
-public class Orderform {
+public class OrderForm {
     private Integer orderformid;
 
     private Integer adsid;

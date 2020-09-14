@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IOrderFormMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.OrderForm">
+    <id column="orderFormId" jdbcType="INTEGER" property="orderformid" />
+    <result column="adsId" jdbcType="INTEGER" property="adsid" />
+    <result column="totalNum" jdbcType="INTEGER" property="totalnum" />
+    <result column="totalMoney" jdbcType="DOUBLE" property="totalmoney" />
+    <result column="orderFormState" jdbcType="VARCHAR" property="orderformstate" />
+    <result column="payMoneyState" jdbcType="VARCHAR" property="paymoneystate" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    orderFormId, adsId, totalNum, totalMoney, orderFormState, payMoneyState, createTime
+  </sql>
+  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orderform
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from orderform
+    where orderFormId = #{orderformid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from orderform
+    where orderFormId = #{orderformid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormExample">
+    delete from orderform
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.OrderForm">
+    insert into orderform (orderFormId, adsId, totalNum, 
+      totalMoney, orderFormState, payMoneyState, 
+      createTime)
+    values (#{orderformid,jdbcType=INTEGER}, #{adsid,jdbcType=INTEGER}, #{totalnum,jdbcType=INTEGER}, 
+      #{totalmoney,jdbcType=DOUBLE}, #{orderformstate,jdbcType=VARCHAR}, #{paymoneystate,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.OrderForm">
+    insert into orderform
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderformid != null">
+        orderFormId,
+      </if>
+      <if test="adsid != null">
+        adsId,
+      </if>
+      <if test="totalnum != null">
+        totalNum,
+      </if>
+      <if test="totalmoney != null">
+        totalMoney,
+      </if>
+      <if test="orderformstate != null">
+        orderFormState,
+      </if>
+      <if test="paymoneystate != null">
+        payMoneyState,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderformid != null">
+        #{orderformid,jdbcType=INTEGER},
+      </if>
+      <if test="adsid != null">
+        #{adsid,jdbcType=INTEGER},
+      </if>
+      <if test="totalnum != null">
+        #{totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null">
+        #{totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="orderformstate != null">
+        #{orderformstate,jdbcType=VARCHAR},
+      </if>
+      <if test="paymoneystate != null">
+        #{paymoneystate,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormExample" resultType="java.lang.Long">
+    select count(*) from orderform
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update orderform
+    <set>
+      <if test="record.orderformid != null">
+        orderFormId = #{record.orderformid,jdbcType=INTEGER},
+      </if>
+      <if test="record.adsid != null">
+        adsId = #{record.adsid,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalnum != null">
+        totalNum = #{record.totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalmoney != null">
+        totalMoney = #{record.totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderformstate != null">
+        orderFormState = #{record.orderformstate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymoneystate != null">
+        payMoneyState = #{record.paymoneystate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update orderform
+    set orderFormId = #{record.orderformid,jdbcType=INTEGER},
+      adsId = #{record.adsid,jdbcType=INTEGER},
+      totalNum = #{record.totalnum,jdbcType=INTEGER},
+      totalMoney = #{record.totalmoney,jdbcType=DOUBLE},
+      orderFormState = #{record.orderformstate,jdbcType=VARCHAR},
+      payMoneyState = #{record.paymoneystate,jdbcType=VARCHAR},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.OrderForm">
+    update orderform
+    <set>
+      <if test="adsid != null">
+        adsId = #{adsid,jdbcType=INTEGER},
+      </if>
+      <if test="totalnum != null">
+        totalNum = #{totalnum,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null">
+        totalMoney = #{totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="orderformstate != null">
+        orderFormState = #{orderformstate,jdbcType=VARCHAR},
+      </if>
+      <if test="paymoneystate != null">
+        payMoneyState = #{paymoneystate,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where orderFormId = #{orderformid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.OrderForm">
+    update orderform
+    set adsId = #{adsid,jdbcType=INTEGER},
+      totalNum = #{totalnum,jdbcType=INTEGER},
+      totalMoney = #{totalmoney,jdbcType=DOUBLE},
+      orderFormState = #{orderformstate,jdbcType=VARCHAR},
+      payMoneyState = #{paymoneystate,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
+    where orderFormId = #{orderformid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -2,7 +2,7 @@ package com.hlbrc.bicyclesales.entity;
 
 import java.util.Date;
 
-public class Parttype {
+public class PartType {
     private Integer parttypeid;
 
     private String name;

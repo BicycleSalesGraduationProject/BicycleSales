@@ -6,8 +6,19 @@ public class Collect {
     private Integer userid;
 
     private Integer bicycleid;
+    
+    private Bicycle bicycle;
+    
 
-    public Integer getCollectid() {
+    public Bicycle getBicycle() {
+		return bicycle;
+	}
+
+	public void setBicycle(Bicycle bicycle) {
+		this.bicycle = bicycle;
+	}
+
+	public Integer getCollectid() {
         return collectid;
     }
 

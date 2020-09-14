@@ -2,7 +2,7 @@ package com.hlbrc.bicyclesales.entity;
 
 import java.util.Date;
 
-public class Partmessage {
+public class PartMessage {
     private Integer partmessageid;
 
     private Integer parttypeid;

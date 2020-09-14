@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hlbrc.bicyclesales.mapper.ICollectMapper">
-  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Collect">
-    <id column="collectId" jdbcType="INTEGER" property="collectid" />
-    <result column="userId" jdbcType="INTEGER" property="userid" />
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IOrderFormDetailMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.OrderFormDetail">
+    <id column="orderFormDetailId" jdbcType="INTEGER" property="orderformdetailid" />
+    <result column="orderFormId" jdbcType="INTEGER" property="orderformid" />
     <result column="bicycleId" jdbcType="INTEGER" property="bicycleid" />
+    <result column="num" jdbcType="DOUBLE" property="num" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,89 +67,104 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    collectId, userId, bicycleId
+    orderFormDetailId, orderFormId, bicycleId, num, money
   </sql>
-  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.CollectExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetailExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from collect
+    from orderformdetail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
-    <if test="pageIndex != null and pageSize != null and pageSize != 0">
-          limit #{pageIndex},#{pageSize}
-      </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from collect
-    where collectId = #{collectid,jdbcType=INTEGER}
+    from orderformdetail
+    where orderFormDetailId = #{orderformdetailid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from collect
-    where collectId = #{collectid,jdbcType=INTEGER}
+    delete from orderformdetail
+    where orderFormDetailId = #{orderformdetailid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.CollectExample">
-    delete from collect
+  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetailExample">
+    delete from orderformdetail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Collect">
-    insert into collect (collectId, userId, bicycleId
-      )
-    values (#{collectid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}
-      )
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetail">
+    insert into orderformdetail (orderFormDetailId, orderFormId, bicycleId, 
+      num, money)
+    values (#{orderformdetailid,jdbcType=INTEGER}, #{orderformid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}, 
+      #{num,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Collect">
-    insert into collect
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetail">
+    insert into orderformdetail
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="collectid != null">
-        collectId,
+      <if test="orderformdetailid != null">
+        orderFormDetailId,
       </if>
-      <if test="userid != null">
-        userId,
+      <if test="orderformid != null">
+        orderFormId,
       </if>
       <if test="bicycleid != null">
         bicycleId,
       </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="collectid != null">
-        #{collectid,jdbcType=INTEGER},
+      <if test="orderformdetailid != null">
+        #{orderformdetailid,jdbcType=INTEGER},
       </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="orderformid != null">
+        #{orderformid,jdbcType=INTEGER},
       </if>
       <if test="bicycleid != null">
         #{bicycleid,jdbcType=INTEGER},
       </if>
+      <if test="num != null">
+        #{num,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.CollectExample" resultType="java.lang.Long">
-    select count(*) from collect
+  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetailExample" resultType="java.lang.Long">
+    select count(*) from orderformdetail
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update collect
+    update orderformdetail
     <set>
-      <if test="record.collectid != null">
-        collectId = #{record.collectid,jdbcType=INTEGER},
+      <if test="record.orderformdetailid != null">
+        orderFormDetailId = #{record.orderformdetailid,jdbcType=INTEGER},
       </if>
-      <if test="record.userid != null">
-        userId = #{record.userid,jdbcType=INTEGER},
+      <if test="record.orderformid != null">
+        orderFormId = #{record.orderformid,jdbcType=INTEGER},
       </if>
       <if test="record.bicycleid != null">
         bicycleId = #{record.bicycleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.num != null">
+        num = #{record.num,jdbcType=DOUBLE},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DOUBLE},
       </if>
     </set>
     <if test="_parameter != null">
@@ -155,30 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update collect
-    set collectId = #{record.collectid,jdbcType=INTEGER},
-      userId = #{record.userid,jdbcType=INTEGER},
-      bicycleId = #{record.bicycleid,jdbcType=INTEGER}
+    update orderformdetail
+    set orderFormDetailId = #{record.orderformdetailid,jdbcType=INTEGER},
+      orderFormId = #{record.orderformid,jdbcType=INTEGER},
+      bicycleId = #{record.bicycleid,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=DOUBLE},
+      money = #{record.money,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Collect">
-    update collect
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetail">
+    update orderformdetail
     <set>
-      <if test="userid != null">
-        userId = #{userid,jdbcType=INTEGER},
+      <if test="orderformid != null">
+        orderFormId = #{orderformid,jdbcType=INTEGER},
       </if>
       <if test="bicycleid != null">
         bicycleId = #{bicycleid,jdbcType=INTEGER},
       </if>
+      <if test="num != null">
+        num = #{num,jdbcType=DOUBLE},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
     </set>
-    where collectId = #{collectid,jdbcType=INTEGER}
+    where orderFormDetailId = #{orderformdetailid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Collect">
-    update collect
-    set userId = #{userid,jdbcType=INTEGER},
-      bicycleId = #{bicycleid,jdbcType=INTEGER}
-    where collectId = #{collectid,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetail">
+    update orderformdetail
+    set orderFormId = #{orderformid,jdbcType=INTEGER},
+      bicycleId = #{bicycleid,jdbcType=INTEGER},
+      num = #{num,jdbcType=DOUBLE},
+      money = #{money,jdbcType=DOUBLE}
+    where orderFormDetailId = #{orderformdetailid,jdbcType=INTEGER}
   </update>
 </mapper>

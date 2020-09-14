@@ -1,6 +1,6 @@
 package com.hlbrc.bicyclesales.entity;
 
-public class Bicyclepartcrr {
+public class BicyclePartCrr {
     private Integer bicyclepartcrrid;
 
     private Integer bicycleid;

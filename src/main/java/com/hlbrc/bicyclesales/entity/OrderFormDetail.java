@@ -1,6 +1,6 @@
 package com.hlbrc.bicyclesales.entity;
 
-public class Orderformdetail {
+public class OrderFormDetail {
     private Integer orderformdetailid;
 
     private Integer orderformid;

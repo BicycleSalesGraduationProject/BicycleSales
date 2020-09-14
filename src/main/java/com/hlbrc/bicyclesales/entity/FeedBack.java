@@ -1,6 +1,6 @@
 package com.hlbrc.bicyclesales.entity;
 
-public class Feedback {
+public class FeedBack {
     private Integer feedbackid;
 
     private String name;

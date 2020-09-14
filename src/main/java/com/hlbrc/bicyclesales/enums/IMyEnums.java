@@ -1,38 +1,78 @@
 package com.hlbrc.bicyclesales.enums;
 
 public interface IMyEnums {
-    /**
+	/**
      * 状态
      */
-    public final static String DELETE = "0";//已删除
-    public final static String NORMAL = "1";//正常
+	/**已删除*/
+    public final static String DELETE = "0";
+    /**正常*/
+    public final static String NORMAL = "1";
     /**
      * 用户状态
      */
-    public final static String USER_ON_lINE = "1";//在线
-    public final static String USER_OFF_LINE = "2";//离线
-    public final static String USER_NORMAL = "3";//正常
-    public final static String USER_LIMIT_LOGIN = "4";//限制登录
+	/**在线*/
+    public final static String USER_ON_lINE = "1";
+    /**离线*/
+    public final static String USER_OFF_LINE = "2";
+    /**正常*/
+    public final static String USER_NORMAL = "3";
+    /**限制登录*/
+    public final static String USER_LIMIT_LOGIN = "4";
+    
     /**
      * 订单状态
      */
-    public final static String ORDER_CANCEL = "0";//取消
-    public final static String ORDER_NON_PAYMENT = "1";//未支付
-    public final static String ORDER_PAID = "2";//已支付
-    public final static String ORDER_NOT_SHIPPED = "3";//未发货
-    public final static String ORDER_SHIPPED = "4";//已发货
-    public final static String ORDER_REFUND = "5";//退货
-    public final static String ORDER_FINISHED = "6";//完成
+    /**取消*/
+    public final static String ORDER_CANCEL = "0";
+    /**未支付*/
+    public final static String ORDER_NON_PAYMENT = "1";
+    /**已支付*/
+    public final static String ORDER_PAID = "2";
+    /**未发货*/
+    public final static String ORDER_NOT_SHIPPED = "3";
+    /**已发货*/
+    public final static String ORDER_SHIPPED = "4";
+    /**退货*/
+    public final static String ORDER_REFUND = "5";
+    /**完成*/
+    public final static String ORDER_FINISHED = "6";
     /**
-     * 用户地址是否默认
-     */
-    public final static String USER_DEFAULT = "1";//用户默认
-    public final static String USER_NOT_DEFAULT = "2";//用户非默认
+	 * 地址状态
+	 */
+	/**非默认地址*/
+	public final static int ADDRESS_NOT_DEFAULT = 0;
+	/**默认地址*/
+	public final static int ADDRESS_DEFAULT = 1;
+	/**该地址已删除*/
+	public final static int ADDRESS_DEL = 2;
     /**
-     * 地址标签
+     * 提示信息
      */
-    public final static String ADDRES_LABRL_HONE = "1";//家
-    public final static String ADDRES_LABRL_COMPANY = "2";//公司
-    public final static String ADDRES_LABRL_SCHOOL = "3";//学校
-    public final static String ADDRES_LABRL_CUSTOM = "4";//自定义
+    /**成功*/
+    public final static String SUCCEED = "ok";
+    /**失败*/
+    public final static String FAIL = "no";
+    /**电话号不存在*/
+    public final static String TEL_NOT_EXISTS = "no_0";
+    /**电话号码已存在*/
+    public final static String TEL_ALREADY_EXISTS = "no_1";
+    /**电话号码已改变*/
+    public final static String TEL_BEEN_CHANGED = "no_2";
+    /**邮箱地址已存在*/
+    public final static String EMAIL_ALREADY_EXISTS = "no_3";
+    /**邮箱地址已改变*/
+    public final static String EMAIL_BEEN_CHANGED = "no_4";
+    /**角色名称已存在*/
+    public final static String ROSE_NAME_ALREADY_EXISTS = "no_5";
+    /**权限分类名称已存在*/
+    public final static String AUTHORITY_TYPE_NAME_ALREADY_EXISTS = "no_6";
+    /**权限名称已存在*/
+    public final static String AUTHORITY_NAME_ALREADY_EXISTS = "no_7";
+    /**权限规则已存在*/
+    public final static String AUTHORITY_ALREADY_EXISTS = "no_8";
+    /**管理员名称重复*/
+    public final static String ADMINISTRATOR_NAME_ALREADY_EXISTS = "no_9";
+    /**用户未登录*/
+    public final static String USER_NOT_LOGIN = "no_10";
 }

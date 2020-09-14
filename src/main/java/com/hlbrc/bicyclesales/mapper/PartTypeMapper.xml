@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hlbrc.bicyclesales.mapper.IColourMapper">
-  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.Colour">
-    <id column="colourId" jdbcType="INTEGER" property="colourid" />
-    <result column="bicycleId" jdbcType="INTEGER" property="bicycleid" />
+<mapper namespace="com.hlbrc.bicyclesales.mapper.IPartTypeMapper">
+  <resultMap id="BaseResultMap" type="com.hlbrc.bicyclesales.entity.PartType">
+    <id column="partTypeId" jdbcType="INTEGER" property="parttypeid" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="uapdateTime" jdbcType="TIMESTAMP" property="uapdatetime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    colourId, bicycleId, name, code, state, createTime, updateTime
+    partTypeId, name, createTime, uapdateTime
   </sql>
-  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.ColourExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.PartTypeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from colour
+    from parttype
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,105 +85,76 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from colour
-    where colourId = #{colourid,jdbcType=INTEGER}
+    from parttype
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from colour
-    where colourId = #{colourid,jdbcType=INTEGER}
+    delete from parttype
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.ColourExample">
-    delete from colour
+  <delete id="deleteByExample" parameterType="com.hlbrc.bicyclesales.entity.PartTypeExample">
+    delete from parttype
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    insert into colour (colourId, bicycleId, name, 
-      code, state, createTime, 
-      updateTime)
-    values (#{colourid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{code,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{updatetime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.PartType">
+    insert into parttype (partTypeId, name, createTime, 
+      uapdateTime)
+    values (#{parttypeid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{uapdatetime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    insert into colour
+  <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.PartType">
+    insert into parttype
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="colourid != null">
-        colourId,
-      </if>
-      <if test="bicycleid != null">
-        bicycleId,
+      <if test="parttypeid != null">
+        partTypeId,
       </if>
       <if test="name != null">
         name,
       </if>
-      <if test="code != null">
-        code,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
       <if test="createtime != null">
         createTime,
       </if>
-      <if test="updatetime != null">
-        updateTime,
+      <if test="uapdatetime != null">
+        uapdateTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="colourid != null">
-        #{colourid,jdbcType=INTEGER},
-      </if>
-      <if test="bicycleid != null">
-        #{bicycleid,jdbcType=INTEGER},
+      <if test="parttypeid != null">
+        #{parttypeid,jdbcType=INTEGER},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=VARCHAR},
-      </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatetime != null">
-        #{updatetime,jdbcType=TIMESTAMP},
+      <if test="uapdatetime != null">
+        #{uapdatetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.ColourExample" resultType="java.lang.Long">
-    select count(*) from colour
+  <select id="countByExample" parameterType="com.hlbrc.bicyclesales.entity.PartTypeExample" resultType="java.lang.Long">
+    select count(*) from parttype
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update colour
+    update parttype
     <set>
-      <if test="record.colourid != null">
-        colourId = #{record.colourid,jdbcType=INTEGER},
-      </if>
-      <if test="record.bicycleid != null">
-        bicycleId = #{record.bicycleid,jdbcType=INTEGER},
+      <if test="record.parttypeid != null">
+        partTypeId = #{record.parttypeid,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.code != null">
-        code = #{record.code,jdbcType=VARCHAR},
-      </if>
-      <if test="record.state != null">
-        state = #{record.state,jdbcType=VARCHAR},
-      </if>
       <if test="record.createtime != null">
         createTime = #{record.createtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updatetime != null">
-        updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      <if test="record.uapdatetime != null">
+        uapdateTime = #{record.uapdatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -194,50 +162,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update colour
-    set colourId = #{record.colourid,jdbcType=INTEGER},
-      bicycleId = #{record.bicycleid,jdbcType=INTEGER},
+    update parttype
+    set partTypeId = #{record.parttypeid,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      code = #{record.code,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=VARCHAR},
       createTime = #{record.createtime,jdbcType=TIMESTAMP},
-      updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
+      uapdateTime = #{record.uapdatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    update colour
+  <update id="updateByPrimaryKeySelective" parameterType="com.hlbrc.bicyclesales.entity.PartType">
+    update parttype
     <set>
-      <if test="bicycleid != null">
-        bicycleId = #{bicycleid,jdbcType=INTEGER},
-      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="code != null">
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null">
         createTime = #{createtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      <if test="uapdatetime != null">
+        uapdateTime = #{uapdatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where colourId = #{colourid,jdbcType=INTEGER}
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.Colour">
-    update colour
-    set bicycleId = #{bicycleid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      state = #{state,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.hlbrc.bicyclesales.entity.PartType">
+    update parttype
+    set name = #{name,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=TIMESTAMP},
-      updateTime = #{updatetime,jdbcType=TIMESTAMP}
-    where colourId = #{colourid,jdbcType=INTEGER}
+      uapdateTime = #{uapdatetime,jdbcType=TIMESTAMP}
+    where partTypeId = #{parttypeid,jdbcType=INTEGER}
   </update>
 </mapper>
