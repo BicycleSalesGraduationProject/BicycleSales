@@ -7,6 +7,8 @@ public class BicyclePartCrr {
 
     private Integer partmessageid;
 
+    private String orderno;
+
     public Integer getBicyclepartcrrid() {
         return bicyclepartcrrid;
     }
@@ -29,5 +31,13 @@ public class BicyclePartCrr {
 
     public void setPartmessageid(Integer partmessageid) {
         this.partmessageid = partmessageid;
+    }
+
+    public String getOrderno() {
+        return orderno;
+    }
+
+    public void setOrderno(String orderno) {
+        this.orderno = orderno == null ? null : orderno.trim();
     }
 }

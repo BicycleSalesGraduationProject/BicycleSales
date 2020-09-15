@@ -7,6 +7,7 @@
     <result column="bicycleId" jdbcType="INTEGER" property="bicycleid" />
     <result column="num" jdbcType="DOUBLE" property="num" />
     <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="orderno" jdbcType="VARCHAR" property="orderno" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    orderFormDetailId, orderFormId, bicycleId, num, money
+    orderFormDetailId, orderFormId, bicycleId, num, money, orderno
   </sql>
   <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetailExample" resultMap="BaseResultMap">
     select
@@ -101,9 +102,9 @@
   </delete>
   <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetail">
     insert into orderformdetail (orderFormDetailId, orderFormId, bicycleId, 
-      num, money)
+      num, money, orderno)
     values (#{orderformdetailid,jdbcType=INTEGER}, #{orderformid,jdbcType=INTEGER}, #{bicycleid,jdbcType=INTEGER}, 
-      #{num,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE})
+      #{num,jdbcType=DOUBLE}, #{money,jdbcType=DOUBLE}, #{orderno,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.OrderFormDetail">
     insert into orderformdetail
@@ -123,6 +124,9 @@
       <if test="money != null">
         money,
       </if>
+      <if test="orderno != null">
+        orderno,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderformdetailid != null">
@@ -139,6 +143,9 @@
       </if>
       <if test="money != null">
         #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="orderno != null">
+        #{orderno,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +173,9 @@
       <if test="record.money != null">
         money = #{record.money,jdbcType=DOUBLE},
       </if>
+      <if test="record.orderno != null">
+        orderno = #{record.orderno,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,7 +187,8 @@
       orderFormId = #{record.orderformid,jdbcType=INTEGER},
       bicycleId = #{record.bicycleid,jdbcType=INTEGER},
       num = #{record.num,jdbcType=DOUBLE},
-      money = #{record.money,jdbcType=DOUBLE}
+      money = #{record.money,jdbcType=DOUBLE},
+      orderno = #{record.orderno,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,6 +208,9 @@
       <if test="money != null">
         money = #{money,jdbcType=DOUBLE},
       </if>
+      <if test="orderno != null">
+        orderno = #{orderno,jdbcType=VARCHAR},
+      </if>
     </set>
     where orderFormDetailId = #{orderformdetailid,jdbcType=INTEGER}
   </update>
@@ -205,7 +219,8 @@
     set orderFormId = #{orderformid,jdbcType=INTEGER},
       bicycleId = #{bicycleid,jdbcType=INTEGER},
       num = #{num,jdbcType=DOUBLE},
-      money = #{money,jdbcType=DOUBLE}
+      money = #{money,jdbcType=DOUBLE},
+      orderno = #{orderno,jdbcType=VARCHAR}
     where orderFormDetailId = #{orderformdetailid,jdbcType=INTEGER}
   </update>
 </mapper>

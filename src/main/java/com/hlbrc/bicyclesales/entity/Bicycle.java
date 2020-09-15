@@ -1,6 +1,9 @@
 package com.hlbrc.bicyclesales.entity;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Bicycle {
     private Integer bicycleid;
@@ -18,8 +21,28 @@ public class Bicycle {
     private Date createtime;
 
     private Date updatetime;
+    
+    private Set<PartType> partType;
+    
+    private Map<PartType,List<PartMessage>> partmessage;
 
-    public Integer getBicycleid() {
+    public Set<PartType> getPartType() {
+		return partType;
+	}
+
+	public void setPartType(Set<PartType> partType) {
+		this.partType = partType;
+	}
+
+	public Map<PartType, List<PartMessage>> getPartmessage() {
+		return partmessage;
+	}
+
+	public void setPartmessage(Map<PartType, List<PartMessage>> partmessage) {
+		this.partmessage = partmessage;
+	}
+
+	public Integer getBicycleid() {
         return bicycleid;
     }
 

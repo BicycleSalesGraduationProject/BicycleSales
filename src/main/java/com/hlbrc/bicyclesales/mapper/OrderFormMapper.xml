@@ -9,6 +9,7 @@
     <result column="orderFormState" jdbcType="VARCHAR" property="orderformstate" />
     <result column="payMoneyState" jdbcType="VARCHAR" property="paymoneystate" />
     <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="orderno" jdbcType="VARCHAR" property="orderno" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    orderFormId, adsId, totalNum, totalMoney, orderFormState, payMoneyState, createTime
+    orderFormId, adsId, totalNum, totalMoney, orderFormState, payMoneyState, createTime, 
+    orderno
   </sql>
   <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.OrderFormExample" resultMap="BaseResultMap">
     select
@@ -104,10 +106,10 @@
   <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.OrderForm">
     insert into orderform (orderFormId, adsId, totalNum, 
       totalMoney, orderFormState, payMoneyState, 
-      createTime)
+      createTime, orderno)
     values (#{orderformid,jdbcType=INTEGER}, #{adsid,jdbcType=INTEGER}, #{totalnum,jdbcType=INTEGER}, 
       #{totalmoney,jdbcType=DOUBLE}, #{orderformstate,jdbcType=VARCHAR}, #{paymoneystate,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=TIMESTAMP})
+      #{createtime,jdbcType=TIMESTAMP}, #{orderno,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.OrderForm">
     insert into orderform
@@ -133,6 +135,9 @@
       <if test="createtime != null">
         createTime,
       </if>
+      <if test="orderno != null">
+        orderno,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderformid != null">
@@ -155,6 +160,9 @@
       </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderno != null">
+        #{orderno,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -188,6 +196,9 @@
       <if test="record.createtime != null">
         createTime = #{record.createtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.orderno != null">
+        orderno = #{record.orderno,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -201,7 +212,8 @@
       totalMoney = #{record.totalmoney,jdbcType=DOUBLE},
       orderFormState = #{record.orderformstate,jdbcType=VARCHAR},
       payMoneyState = #{record.paymoneystate,jdbcType=VARCHAR},
-      createTime = #{record.createtime,jdbcType=TIMESTAMP}
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      orderno = #{record.orderno,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -227,6 +239,9 @@
       <if test="createtime != null">
         createTime = #{createtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="orderno != null">
+        orderno = #{orderno,jdbcType=VARCHAR},
+      </if>
     </set>
     where orderFormId = #{orderformid,jdbcType=INTEGER}
   </update>
@@ -237,7 +252,8 @@
       totalMoney = #{totalmoney,jdbcType=DOUBLE},
       orderFormState = #{orderformstate,jdbcType=VARCHAR},
       payMoneyState = #{paymoneystate,jdbcType=VARCHAR},
-      createTime = #{createtime,jdbcType=TIMESTAMP}
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      orderno = #{orderno,jdbcType=VARCHAR}
     where orderFormId = #{orderformid,jdbcType=INTEGER}
   </update>
 </mapper>

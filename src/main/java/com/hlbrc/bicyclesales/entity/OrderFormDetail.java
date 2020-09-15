@@ -1,5 +1,7 @@
 package com.hlbrc.bicyclesales.entity;
 
+import java.util.List;
+
 public class OrderFormDetail {
     private Integer orderformdetailid;
 
@@ -11,7 +13,29 @@ public class OrderFormDetail {
 
     private Double money;
 
-    public Integer getOrderformdetailid() {
+    private String orderno;
+    
+    private Bicycle bicycle;
+    
+    private List<PartMessage> partmessage;
+
+    public List<PartMessage> getPartmessage() {
+		return partmessage;
+	}
+
+	public void setPartmessage(List<PartMessage> partmessage) {
+		this.partmessage = partmessage;
+	}
+
+	public Bicycle getBicycle() {
+		return bicycle;
+	}
+
+	public void setBicycle(Bicycle bicycle) {
+		this.bicycle = bicycle;
+	}
+
+	public Integer getOrderformdetailid() {
         return orderformdetailid;
     }
 
@@ -49,5 +73,13 @@ public class OrderFormDetail {
 
     public void setMoney(Double money) {
         this.money = money;
+    }
+
+    public String getOrderno() {
+        return orderno;
+    }
+
+    public void setOrderno(String orderno) {
+        this.orderno = orderno == null ? null : orderno.trim();
     }
 }

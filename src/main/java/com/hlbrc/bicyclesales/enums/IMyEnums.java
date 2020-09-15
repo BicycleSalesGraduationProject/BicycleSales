@@ -8,6 +8,7 @@ public interface IMyEnums {
     public final static String DELETE = "0";
     /**正常*/
     public final static String NORMAL = "1";
+    
     /**
      * 用户状态
      */
@@ -23,6 +24,7 @@ public interface IMyEnums {
     /**
      * 订单状态
      */
+    
     /**取消*/
     public final static String ORDER_CANCEL = "0";
     /**未支付*/
@@ -37,6 +39,7 @@ public interface IMyEnums {
     public final static String ORDER_REFUND = "5";
     /**完成*/
     public final static String ORDER_FINISHED = "6";
+    
     /**
 	 * 地址状态
 	 */
@@ -46,6 +49,7 @@ public interface IMyEnums {
 	public final static int ADDRESS_DEFAULT = 1;
 	/**该地址已删除*/
 	public final static int ADDRESS_DEL = 2;
+	
     /**
      * 提示信息
      */

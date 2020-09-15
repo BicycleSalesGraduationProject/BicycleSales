@@ -17,6 +17,8 @@ public class OrderForm {
 
     private Date createtime;
 
+    private String orderno;
+
     public Integer getOrderformid() {
         return orderformid;
     }
@@ -71,5 +73,13 @@ public class OrderForm {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public String getOrderno() {
+        return orderno;
+    }
+
+    public void setOrderno(String orderno) {
+        this.orderno = orderno == null ? null : orderno.trim();
     }
 }

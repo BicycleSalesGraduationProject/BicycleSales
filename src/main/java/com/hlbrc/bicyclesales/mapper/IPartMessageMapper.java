@@ -3,6 +3,8 @@ package com.hlbrc.bicyclesales.mapper;
 import com.hlbrc.bicyclesales.entity.PartMessage;
 import com.hlbrc.bicyclesales.entity.PartMessageExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 
 public interface IPartMessageMapper {
@@ -13,7 +15,8 @@ public interface IPartMessageMapper {
     int deleteByPrimaryKey(Integer partmessageid);
 
     int insert(PartMessage record);
-
+    
+    @Options(useGeneratedKeys = true)
     int insertSelective(PartMessage record);
 
     List<PartMessage> selectByExample(PartMessageExample example);
