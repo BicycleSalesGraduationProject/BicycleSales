@@ -15,7 +15,21 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		</plugin>
 	</plugins>
 	<mappers>
-		<mapper resource="com/hlbrc/bicyclesales/mapper/BaseMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/AddressMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/AdministratorMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/BicycleMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/BicyclePartCrrMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/BicycleTypeMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/CollectMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/ColourMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/FeedBackMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/OrderFormDetailMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/OrderFormMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/PartMessageMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/PartTypeMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/PhotoMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/ShopcarMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/UserMapper.xml" />
 	</mappers>
 </configuration>
 	

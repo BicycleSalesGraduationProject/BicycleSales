@@ -449,6 +449,7 @@ public class MainServiceImpl implements IMainService {
 			bicycle.setCreatetime(new Date());
 			int i =bicycle_mapper.insertSelective(bicycle);
 			if(i>0) {
+				obj.accumulate("bid", i);
 				obj.accumulate("msg", IMyEnums.SUCCEED);
 			}
 			else {
@@ -1386,10 +1387,10 @@ public class MainServiceImpl implements IMainService {
 			BicycleExample example = new BicycleExample();
 			BicycleExample.Criteria criteria = example.createCriteria();
 			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
-				example.setPageIndex(Integer.parseInt(json.getString("pageIndex")+1));
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
 			}
 			else {
-				example.setPageIndex(1);
+				example.setPageIndex(0);
 			}
 	        example.setPageSize(10);
 			example.setOrderByClause("createtime asc");

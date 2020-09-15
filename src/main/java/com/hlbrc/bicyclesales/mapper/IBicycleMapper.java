@@ -3,6 +3,8 @@ package com.hlbrc.bicyclesales.mapper;
 import com.hlbrc.bicyclesales.entity.Bicycle;
 import com.hlbrc.bicyclesales.entity.BicycleExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 
 public interface IBicycleMapper {
@@ -13,7 +15,8 @@ public interface IBicycleMapper {
     int deleteByPrimaryKey(Integer bicycleid);
 
     int insert(Bicycle record);
-
+    
+    @Options(useGeneratedKeys = true)
     int insertSelective(Bicycle record);
 
     List<Bicycle> selectByExample(BicycleExample example);
