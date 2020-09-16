@@ -16,7 +16,6 @@ public interface IBicycleMapper {
 
     int insert(Bicycle record);
     
-    @Options(useGeneratedKeys = true)
     int insertSelective(Bicycle record);
 
     List<Bicycle> selectByExample(BicycleExample example);

@@ -445,11 +445,20 @@ public class MainServiceImpl implements IMainService {
 				obj.accumulate("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
-			bicycle.setDelstate(IMyEnums.NORMAL);
+			if(json.getString("state")!=null&&!"".equals(json.getString("state"))) {
+				bicycle.setDelstate(json.getString("state"));
+			}
+			else {
+				bicycle.setDelstate(IMyEnums.NORMAL);
+			}
 			bicycle.setCreatetime(new Date());
 			int i =bicycle_mapper.insertSelective(bicycle);
 			if(i>0) {
-				obj.accumulate("bid", i);
+				BicycleExample example = new BicycleExample();
+				BicycleExample.Criteria criteria = example.createCriteria();
+				criteria.andCreatetimeEqualTo(bicycle.getCreatetime());
+				criteria.andNameEqualTo(bicycle.getName());
+				obj.accumulate("bid", bicycle_mapper.selectByExample(example).get(0).getBicycleid());
 				obj.accumulate("msg", IMyEnums.SUCCEED);
 			}
 			else {

@@ -1,6 +1,7 @@
 package com.hlbrc.bicyclesales.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,13 +58,13 @@ public class MainController {
      */
     @RequestMapping(value = "insertBicycle")
     @ResponseBody
-    public String insertBicycle(@RequestParam(value="suoluetu",required=false) MultipartFile[] suoluetu,
-    							@RequestParam(value="chanpinzhutu",required=false) MultipartFile[] chanpinzhutu,
+    public String insertBicycle(@RequestParam(value="suoluetu",required=false)MultipartFile[] suoluetu,
+    							@RequestParam(value="chanpinzhutu",required=false)MultipartFile[] chanpinzhutu,
     							String message,
     							HttpServletRequest request,
     							HttpServletResponse response){
     	try {
-    		System.err.println(message);
+    		System.err.println("主："+suoluetu.length+" "+message+" 缩："+chanpinzhutu.length);
     		List<String> list = new ArrayList<String>(); 
     		try {
     			int i=0;
@@ -73,6 +74,18 @@ public class MainController {
     					i++;
     					list.add(fileName);
     					File file = new File("F:/bicycle_pic/" + fileName);
+    					if(!file.exists()){
+    					    //先得到文件的上级目录,并创建上级目录,在创建文件
+    						if(!file.getParentFile().mkdir()) {
+    							file.getParentFile().getParentFile().mkdir();
+    						}
+    					    try {
+    					        //创建文件
+    					        file.createNewFile();
+    					    } catch (IOException e) {
+    					        e.printStackTrace();
+    					    }
+    					}
     					//对文件进行上传
     					f.transferTo(file);
     				}
@@ -83,6 +96,18 @@ public class MainController {
     					i++;
     					list.add(fileName);
     					File file = new File("F:/bicycle_pic/" + fileName);
+    					if(!file.exists()){
+    					    //先得到文件的上级目录,并创建上级目录,在创建文件
+    						if(!file.getParentFile().mkdir()) {
+    							file.getParentFile().getParentFile().mkdir();
+    						}
+    					    try {
+    					        //创建文件
+    					        file.createNewFile();
+    					    } catch (IOException e) {
+    					        e.printStackTrace();
+    					    }
+    					}
     					//对文件进行上传
     					f.transferTo(file);
     				}
@@ -94,18 +119,20 @@ public class MainController {
     		String json = main_service.insertbicycle(message);
     		JSONObject jsonmessage = JSONObject.fromObject(message);
     		JSONObject jsonobj = JSONObject.fromObject(json);
-    		JSONObject obj = new JSONObject();
+    		
     		if(IMyEnums.SUCCEED.equals(jsonobj.getString("msg"))) {
     			for(String fileName:list) {
+    				JSONObject obj = new JSONObject();
     				obj.accumulate("bicycleid", jsonobj.getString("bid"));
         			obj.accumulate("path", fileName);
         			obj.accumulate("name", jsonmessage.getString("name"));
-        			json = main_service.insertbicyclephoto(message);
+        			json = main_service.insertbicyclephoto(obj.toString());
     			}
     		}
     		return json;
     	}
     	catch (Exception e) {
+    		e.printStackTrace();
     		MyLog.log.debug("自行车信息添加失败："+e.getMessage());
 			return "{'msg','no'}";
 		}

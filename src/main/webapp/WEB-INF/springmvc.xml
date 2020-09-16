@@ -28,15 +28,15 @@
 	    <property name="maxUploadSize" value="-1"/>  
 	</bean>
 	<!-- 异常解析器 -->
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+<!-- 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
-				<!-- key为指定的异常类型，值为要跳转的界面 -->
+				key为指定的异常类型，值为要跳转的界面
 				<prop key="java.lang.Throwable">index.jsp</prop>
 				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error.jsp</prop>
 			</props>
 		</property>
-	</bean>
+	</bean> -->
 	
 	<mvc:annotation-driven />
 	<!-- 处理getpost请求乱码 -->

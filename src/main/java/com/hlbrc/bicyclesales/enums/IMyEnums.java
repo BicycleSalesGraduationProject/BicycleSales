@@ -79,4 +79,14 @@ public interface IMyEnums {
     public final static String ADMINISTRATOR_NAME_ALREADY_EXISTS = "no_9";
     /**用户未登录*/
     public final static String USER_NOT_LOGIN = "no_10";
+    
+    /**
+     * 推荐至（自行车状态）
+     */
+    /**精品*/
+    public final static String BICYCLE_VOUTIQUE = "101";
+    /**新品*/
+    public final static String BICYCLE_NEW_PRODUCT = "102";
+    /**热销*/
+    public final static String BICYCLE_HOT_SALE = "103";
 }
