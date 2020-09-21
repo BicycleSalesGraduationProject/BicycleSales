@@ -77,13 +77,13 @@ public interface IUserService {
 	 */
 	public String insertfeedback(String message);
     /**
-             * 查看所有用户反馈 分页
+     * 查看所有用户反馈 分页
      * @param message
      * @return
      */
 	public String queryuserallfeedback(String message);
     /**
-             * 用户反馈删除
+     * 用户反馈删除
      * @param message
      * @return
      */
@@ -95,19 +95,19 @@ public interface IUserService {
 	 */
 	public String deletelistfeedback(String message);
     /**
-              * 用户信息修改
+     * 用户信息修改
      * @param message
      * @return
      */
 	public String updateuser(String message);
     /**
-             * 用户密码修改
+     * 用户密码修改
      * @param message
      * @return
      */
 	public String updateuserpassword(String message);
     /**
-              * 用户个人信息查看 通过用户id查看个人信息
+     * 用户个人信息查看 通过用户id查看个人信息
      * @param message
      * @return
      */
@@ -119,7 +119,7 @@ public interface IUserService {
 	 */
 	public String queryalluser(String message);
     /**
-              * 用户状态改变 如：封号 是否在线 假删除
+     * 用户状态改变 如：封号 是否在线 假删除
      * @param message
      * @return
      */
@@ -131,7 +131,7 @@ public interface IUserService {
 	 */
 	public String setuserliststatus(String message);
     /**
-              * 用户删除
+     * 用户删除
      * @param message
      * @return
      */
@@ -148,4 +148,10 @@ public interface IUserService {
 	 * @return
 	 */
 	public String queryuserByEmail(String message);
+	/**
+	 * 通过用户id查询收藏个数
+	 * @param message
+	 * @return
+	 */
+	public String querycollectnum(String message);
 }

@@ -188,4 +188,15 @@ public interface IMainService {
      * @param message
      */
 	public String querybicycleById(String message);
+	/**
+     * 显示某个状态的6辆自行车信息
+     * @param message
+     */
+	public String querydelstatebicycle(String message);
+	/**
+	 * 通过用户id查询购物车数量
+	 * @param message
+	 * @return
+	 */
+	public String queryshopcarnum(String message);
 }

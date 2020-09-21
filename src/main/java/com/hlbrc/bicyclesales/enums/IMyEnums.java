@@ -89,4 +89,14 @@ public interface IMyEnums {
     public final static String BICYCLE_NEW_PRODUCT = "102";
     /**热销*/
     public final static String BICYCLE_HOT_SALE = "103";
+    
+    /**
+     * 验证码状态
+     */
+    /**验证码正常*/
+    public final static String CODE_NORMAL = "NORMAL";
+    /**验证码失效*/
+    public final static String CODE_LOSE_EFFICAAY = "LOSE_EFFICAAY";
+    /**验证码错误*/
+    public final static String CODE_ERROR = "ERROR";
 }

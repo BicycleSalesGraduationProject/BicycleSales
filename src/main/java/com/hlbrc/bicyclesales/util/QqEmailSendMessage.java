@@ -22,7 +22,10 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.HtmlEmail;
 
@@ -48,11 +51,15 @@ public class QqEmailSendMessage {
 		    email.addTo(receiver);
 		    int mobile_code1 = (int)((Math.random()*9+1)*100000);
 		    String mobile_code = mobile_code1+"";
-		    request.getSession().setAttribute("appEmailVerifyCode", mobile_code);
+		    HttpSession session = request.getSession();
+		    //发送session设置失效时间
+		    session.setAttribute("appEmailVerifyCode", mobile_code);
+		    session.setAttribute("email", receiver);
+		    session.setMaxInactiveInterval(60*5);
 		    //设置发送的内容
-		    email.setContent("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。", "text/html;charset=UTF-8");
+		    email.setContent("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。验证码将在5分钟后失效！", "text/html;charset=UTF-8");
 		    //设置邮箱标题
-		    email.setSubject("会员管理系统");
+		    email.setSubject("自行车销售");
 		    //执行邮件发送
 	        System.err.println(email.send());
 	        return true;

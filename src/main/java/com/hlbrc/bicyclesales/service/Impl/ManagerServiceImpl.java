@@ -34,15 +34,15 @@ public class ManagerServiceImpl implements IManagerService{
 			List<Administrator> list = administrator_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
 				session.setAttribute("administrator", list.get(0));
-				obj.accumulate("administrator", JSONObject.fromObject(list.get(0)));
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("administrator", JSONObject.fromObject(list.get(0)));
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -61,19 +61,19 @@ public class ManagerServiceImpl implements IManagerService{
 				criteria.andNameEqualTo(json.getString("name"));
 				List<Administrator> list = administrator_mapper.selectByExample(example);
 				if(list!=null&&list.size()>0) {
-					obj.accumulate("msg", IMyEnums.ADMINISTRATOR_NAME_ALREADY_EXISTS);
+					obj.put("msg", IMyEnums.ADMINISTRATOR_NAME_ALREADY_EXISTS);
 					return obj.toString();
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("password")!=null&&!"".equals(json.getString("password"))) {
 				administrator.setPassword(MD5.getMD5(json.getString("password")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("duty")!=null&&!"".equals(json.getString("duty"))) {
@@ -81,14 +81,14 @@ public class ManagerServiceImpl implements IManagerService{
 			}
 			int i = administrator_mapper.insertSelective(administrator);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -104,14 +104,14 @@ public class ManagerServiceImpl implements IManagerService{
 				administrator.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("password")!=null&&!"".equals(json.getString("password"))) {
 				administrator.setPassword(MD5.getMD5(json.getString("password")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("duty")!=null&&!"".equals(json.getString("duty"))) {
@@ -122,14 +122,14 @@ public class ManagerServiceImpl implements IManagerService{
 			criteria.andAdministratoridEqualTo(Integer.parseInt(json.getString("administratorid")));
 			int i = administrator_mapper.updateByExampleSelective(administrator,example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -145,7 +145,7 @@ public class ManagerServiceImpl implements IManagerService{
 				administrator.setPassword(MD5.getMD5(json.getString("password")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			AdministratorExample example = new AdministratorExample();
@@ -153,14 +153,14 @@ public class ManagerServiceImpl implements IManagerService{
 			criteria.andAdministratoridEqualTo(Integer.parseInt(json.getString("administratorid")));
 			int i = administrator_mapper.updateByExampleSelective(administrator,example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -177,20 +177,20 @@ public class ManagerServiceImpl implements IManagerService{
 				criteria.andAdministratoridEqualTo(Integer.parseInt(json.getString("administratorid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			List<Administrator> list = administrator_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.accumulate("administrator", JSONObject.fromObject(list.get(0)));
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("administrator", JSONObject.fromObject(list.get(0)));
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}

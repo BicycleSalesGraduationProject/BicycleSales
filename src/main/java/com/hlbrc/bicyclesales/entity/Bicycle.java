@@ -25,8 +25,38 @@ public class Bicycle {
     private Set<PartType> partType;
     
     private Map<PartType,List<PartMessage>> partmessage;
+    
+    private List<Photo> photo;
+    
+    private String firstphoto;
+    
+    private String secondphoto;
 
-    public Set<PartType> getPartType() {
+	public String getFirstphoto() {
+		return firstphoto;
+	}
+
+	public void setFirstphoto(String firstphoto) {
+		this.firstphoto = firstphoto;
+	}
+
+	public String getSecondphoto() {
+		return secondphoto;
+	}
+
+	public void setSecondphoto(String secondphoto) {
+		this.secondphoto = secondphoto;
+	}
+
+	public List<Photo> getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(List<Photo> photo) {
+		this.photo = photo;
+	}
+
+	public Set<PartType> getPartType() {
 		return partType;
 	}
 

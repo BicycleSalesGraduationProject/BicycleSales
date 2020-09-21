@@ -30,6 +30,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="com/hlbrc/bicyclesales/mapper/PhotoMapper.xml" />
 		<mapper resource="com/hlbrc/bicyclesales/mapper/ShopcarMapper.xml" />
 		<mapper resource="com/hlbrc/bicyclesales/mapper/UserMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/PrivinceMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/CityMapper.xml" />
+		<mapper resource="com/hlbrc/bicyclesales/mapper/DistrictMapper.xml" />
 	</mappers>
 </configuration>
 	

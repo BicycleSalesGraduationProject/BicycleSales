@@ -14,8 +14,18 @@ public class Shopcar {
     private Double total;
 
     private Date createtime;
+    
+    private Bicycle bicycle;
 
-    public Integer getShopcarid() {
+    public Bicycle getBicycle() {
+		return bicycle;
+	}
+
+	public void setBicycle(Bicycle bicycle) {
+		this.bicycle = bicycle;
+	}
+
+	public Integer getShopcarid() {
         return shopcarid;
     }
 

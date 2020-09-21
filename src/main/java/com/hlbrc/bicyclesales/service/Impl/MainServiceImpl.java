@@ -77,20 +77,24 @@ public class MainServiceImpl implements IMainService {
 		JSONObject json = new JSONObject();
 		if(message!=null&&!"".equals(message)) {
 			json = JSONObject.fromObject(message);
-			obj.accumulate("msg", IMyEnums.SUCCEED);
+			obj.put("msg", IMyEnums.SUCCEED);
 			Shopcar shopcar = new Shopcar();
+			ShopcarExample example = new ShopcarExample();
+			ShopcarExample.Criteria criteria = example.createCriteria();
 			if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
 				shopcar.setUserid(Integer.parseInt(json.getString("userid")));
+				criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("bicycleid")!=null&&!"".equals(json.getString("bicycleid"))) {
 				shopcar.setBicycleid(Integer.parseInt(json.getString("bicycleid")));
+				criteria.andBicycleidEqualTo(Integer.parseInt(json.getString("bicycleid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("num")!=null&&!"".equals(json.getString("num"))) {
@@ -103,20 +107,29 @@ public class MainServiceImpl implements IMainService {
 				shopcar.setTotal(Double.parseDouble(json.getString("total")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
-			shopcar.setCreatetime(new Date());
-			int i = shopcar_mapper.insertSelective(shopcar);
-			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+			int i = 0;
+			List<Shopcar> list = shopcar_mapper.selectByExample(example);
+			if(list!=null&&list.size()>0) {
+				shopcar.setNum(list.get(0).getNum()+Integer.parseInt(json.getString("num")));
+				shopcar.setTotal(list.get(0).getTotal()+Double.parseDouble(json.getString("total")));
+				i = shopcar_mapper.updateByExampleSelective(shopcar, example);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				shopcar.setCreatetime(new Date());
+				i = shopcar_mapper.insertSelective(shopcar);
+			}
+			if(i>0) {
+				obj.put("msg", IMyEnums.SUCCEED);
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -132,7 +145,7 @@ public class MainServiceImpl implements IMainService {
 				criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 			if(json.getString("bicycleids")!=null&&!"".equals(json.getString("bicycleids"))) {
 				String[] bicycleids = json.getString("bicycleids").split(";");
@@ -141,19 +154,19 @@ public class MainServiceImpl implements IMainService {
 						criteria.andBicycleidEqualTo(Integer.parseInt(id));
 						shopcar_mapper.deleteByExample(example);
 					}
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 			
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -163,7 +176,7 @@ public class MainServiceImpl implements IMainService {
 		JSONObject json = new JSONObject();
 		if(message!=null&&!"".equals(message)) {
 			json = JSONObject.fromObject(message);
-			obj.accumulate("msg", IMyEnums.SUCCEED);
+			obj.put("msg", IMyEnums.SUCCEED);
 			Shopcar shopcar = new Shopcar();
 			ShopcarExample example = new ShopcarExample();
 			ShopcarExample.Criteria criteria = example.createCriteria();
@@ -171,40 +184,40 @@ public class MainServiceImpl implements IMainService {
 				criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("bicycleid")!=null&&!"".equals(json.getString("bicycleid"))) {
 				criteria.andBicycleidEqualTo(Integer.parseInt(json.getString("bicycleid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("num")!=null&&!"".equals(json.getString("num"))) {
 				shopcar.setNum(Integer.parseInt(json.getString("num")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("total")!=null&&!"".equals(json.getString("total"))) {
 				shopcar.setTotal(Double.parseDouble(json.getString("total")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = shopcar_mapper.updateByExample(shopcar, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -216,25 +229,47 @@ public class MainServiceImpl implements IMainService {
 			json = JSONObject.fromObject(message);
 			ShopcarExample example = new ShopcarExample();
 			ShopcarExample.Criteria criteria = example.createCriteria();
+			example.setOrderByClause("createTime ASC");
+			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
+			
+			}
+			else {
+				example.setPageIndex(0);
+			}
+	        example.setPageSize(10);
 			if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
 				criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			List<Shopcar> list = shopcar_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.accumulate("shopcarlist", list);
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				for(Shopcar s:list) {
+					Bicycle bicycle = bicycle_mapper.selectByPrimaryKey(s.getBicycleid());
+					PhotoExample example1 = new PhotoExample();
+					PhotoExample.Criteria criteria1 = example1.createCriteria();
+					criteria1.andBicycleidEqualTo(s.getBicycleid());
+					List<Photo> list1 = photo_mapper.selectByExample(example1);
+					bicycle.setPhoto(list1);
+					if(list1!=null&&list1.size()>0) {
+						bicycle.setFirstphoto("http://127.0.0.1:9090/bicycle_pic/"+list1.get(0).getPath());
+						bicycle.setSecondphoto("http://127.0.0.1:9090/bicycle_pic/"+list1.get(1).getPath());
+					}
+					s.setBicycle(bicycle);
+				}
+				obj.put("shopcarlist", list);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 			
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -250,21 +285,21 @@ public class MainServiceImpl implements IMainService {
 					orderform.setAdsid(Integer.parseInt(json.getString("adsid")));
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 					return obj.toString();
 				}
 				if(json.getString("totalnum")!=null&&!"".equals(json.getString("totalnum"))) {
 					orderform.setTotalnum(Integer.parseInt(json.getString("totalnum")));
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 					return obj.toString();
 				}
 				if(json.getString("totalmoney")!=null&&!"".equals(json.getString("totalmoney"))) {
 					orderform.setTotalmoney(Double.parseDouble(json.getString("totalmoney")));
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 					return obj.toString();
 				}
 				
@@ -307,24 +342,24 @@ public class MainServiceImpl implements IMainService {
 						if(i>0) {
 							//设置令牌
 							Token.setToken(request);
-							obj.accumulate("msg", IMyEnums.SUCCEED);
+							obj.put("msg", IMyEnums.SUCCEED);
 						}
 						else {
-							obj.accumulate("msg", IMyEnums.FAIL);
+							obj.put("msg", IMyEnums.FAIL);
 							return obj.toString();
 						}
 					}
 					else {
-						obj.accumulate("msg", IMyEnums.FAIL);
+						obj.put("msg", IMyEnums.FAIL);
 						return obj.toString();
 					}
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		return obj.toString();
@@ -341,7 +376,7 @@ public class MainServiceImpl implements IMainService {
 				criteria.andOrdernoEqualTo(json.getString("orderno"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			List<OrderFormDetail> list = order_form_detail_mapper.selectByExample(example);
@@ -362,15 +397,15 @@ public class MainServiceImpl implements IMainService {
 					}
 					od.setPartmessage(list3);
 				}
-				obj.accumulate("allorderformdetail", list);
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("allorderformdetail", list);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -387,26 +422,26 @@ public class MainServiceImpl implements IMainService {
 				criteria.andOrderformidEqualTo(Integer.parseInt(json.getString("orderformid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("orderformstate") != null&&!"".equals(json.getString("orderformstate"))) {
 				orderForm.setOrderformstate(json.getString("orderformstate"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = order_form_mapper.updateByExample(orderForm, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -421,28 +456,28 @@ public class MainServiceImpl implements IMainService {
 				bicycle.setBicycletypeid(Integer.parseInt(json.getString("bicycletypeid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
 				bicycle.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("money")!=null&&!"".equals(json.getString("money"))) {
 				bicycle.setMoney(Double.parseDouble(json.getString("money")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("inventory")!=null&&!"".equals(json.getString("inventory"))) {
 				bicycle.setInventory(Integer.parseInt(json.getString("inventory")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("state")!=null&&!"".equals(json.getString("state"))) {
@@ -458,15 +493,15 @@ public class MainServiceImpl implements IMainService {
 				BicycleExample.Criteria criteria = example.createCriteria();
 				criteria.andCreatetimeEqualTo(bicycle.getCreatetime());
 				criteria.andNameEqualTo(bicycle.getName());
-				obj.accumulate("bid", bicycle_mapper.selectByExample(example).get(0).getBicycleid());
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("bid", bicycle_mapper.selectByExample(example).get(0).getBicycleid());
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -483,7 +518,7 @@ public class MainServiceImpl implements IMainService {
 				criteria.andBicycleidEqualTo(Integer.parseInt(json.getString("bicycleid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("bicycletypeid")!=null&&!"".equals(json.getString("bicycletypeid"))) {
@@ -501,14 +536,14 @@ public class MainServiceImpl implements IMainService {
 			bicycle.setUpdatetime(new Date());
 			int i =bicycle_mapper.updateByExampleSelective(bicycle, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -525,26 +560,26 @@ public class MainServiceImpl implements IMainService {
 				photo.setState(json.getString("state"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("photoid")!=null&&!"".equals(json.getString("photoid"))) {
 				criteria.andPhotoidEqualTo(Integer.parseInt(json.getString("photoid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = photo_mapper.updateByExample(photo, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -559,7 +594,7 @@ public class MainServiceImpl implements IMainService {
 				photo.setBicycleid(Integer.parseInt(json.getString("bicycleid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
@@ -569,21 +604,21 @@ public class MainServiceImpl implements IMainService {
 				photo.setPath(json.getString("path"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			photo.setState(IMyEnums.NORMAL);
 			photo.setCreatetime(new Date());
 			int i = photo_mapper.insertSelective(photo);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -600,27 +635,27 @@ public class MainServiceImpl implements IMainService {
 				criteria.andBicycleidEqualTo(Integer.parseInt(json.getString("bicycleid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("delstate")!=null&&!"".equals(json.getString("delstate"))) {
 				bicycle.setDelstate(json.getString("delstate"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			bicycle.setUpdatetime(new Date());
 			int i =bicycle_mapper.updateByExampleSelective(bicycle, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -638,7 +673,7 @@ public class MainServiceImpl implements IMainService {
 				bicycle.setDelstate(json.getString("delstate"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = 0;
@@ -651,21 +686,21 @@ public class MainServiceImpl implements IMainService {
 						i +=bicycle_mapper.updateByExampleSelective(bicycle, example);
 					}
 					if(i>0) {
-						obj.accumulate("msg", IMyEnums.SUCCEED);
+						obj.put("msg", IMyEnums.SUCCEED);
 					}
 					else {
-						obj.accumulate("msg", IMyEnums.FAIL);
+						obj.put("msg", IMyEnums.FAIL);
 					}
 				}
 				
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -678,18 +713,18 @@ public class MainServiceImpl implements IMainService {
 			if(json.getString("bicycleid")!=null&&!"".equals(json.getString("bicycleid"))) {
 				int i = bicycle_mapper.deleteByPrimaryKey(Integer.parseInt(json.getString("bicycleid")));
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -708,18 +743,18 @@ public class MainServiceImpl implements IMainService {
 					}
 				}
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -734,7 +769,7 @@ public class MainServiceImpl implements IMainService {
 				bicycletype.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			bicycletype.setState(IMyEnums.NORMAL);
@@ -742,14 +777,14 @@ public class MainServiceImpl implements IMainService {
 			bicycletype.setCreatetime(new Date());
 			int i = bicycle_type_mapper.insertSelective(bicycletype);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -762,19 +797,19 @@ public class MainServiceImpl implements IMainService {
 			if(json.getString("bicycletypeid")!=null&&!"".equals(json.getString("bicycletypeid"))) {
 				int i =bicycle_type_mapper.deleteByPrimaryKey(Integer.parseInt(json.getString("bicycletypeid")));
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -793,19 +828,19 @@ public class MainServiceImpl implements IMainService {
 					}
 				}
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -822,26 +857,26 @@ public class MainServiceImpl implements IMainService {
 				criteria.andBicycletypeidEqualTo(Integer.parseInt(json.getString("bicycletypeid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("state")!=null&&!"".equals(json.getString("state"))) {
 				bicycleType.setState(json.getString("state"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i =bicycle_type_mapper.updateByExampleSelective(bicycleType, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -858,7 +893,7 @@ public class MainServiceImpl implements IMainService {
 				bicycleType.setState(json.getString("state"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("bicycletypeids")!=null&&!"".equals(json.getString("bicycletypeids"))) {
@@ -870,22 +905,22 @@ public class MainServiceImpl implements IMainService {
 						i +=bicycle_type_mapper.updateByExampleSelective(bicycleType, example);
 					}
 					if(i>0) {
-						obj.accumulate("msg", IMyEnums.SUCCEED);
+						obj.put("msg", IMyEnums.SUCCEED);
 					}
 					else {
-						obj.accumulate("msg", IMyEnums.FAIL);
+						obj.put("msg", IMyEnums.FAIL);
 					}
 				}
 				
 				criteria.andBicycletypeidEqualTo(Integer.parseInt(json.getString("bicycletypeids")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 			
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -899,15 +934,15 @@ public class MainServiceImpl implements IMainService {
 			BicycleTypeExample example = new BicycleTypeExample();
 			List<BicycleType> list = bicycle_type_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.accumulate("bicycletype", list);
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("bicycletype", list);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -924,33 +959,33 @@ public class MainServiceImpl implements IMainService {
 				criteria.andBicycletypeidEqualTo(Integer.parseInt(json.getString("bicycletypeid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
 				bicycletype.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("state")!=null&&!"".equals(json.getString("state"))) {
 				bicycletype.setState(json.getString("state"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = bicycle_type_mapper.updateByExampleSelective(bicycletype, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -965,35 +1000,35 @@ public class MainServiceImpl implements IMainService {
 				colour.setBicycleid(Integer.parseInt(json.getString("bicycletypeid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
 				colour.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("code")!=null&&!"".equals(json.getString("code"))) {
 				colour.setCode(json.getString("code"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			colour.setState(IMyEnums.NORMAL);
 			colour.setCreatetime(new Date());
 			int i = colour_mapper.insertSelective(colour);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1007,15 +1042,15 @@ public class MainServiceImpl implements IMainService {
 			ColourExample example = new ColourExample();
 			List<Colour> list = colour_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.accumulate("colour", list);
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("colour", list);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1032,26 +1067,26 @@ public class MainServiceImpl implements IMainService {
 				criteria.andBicycleidEqualTo(Integer.parseInt(json.getString("colourid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("state")!=null&&!"".equals(json.getString("state"))) {
 				colour.setState(json.getString("state"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = colour_mapper.updateByExample(colour, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1069,7 +1104,7 @@ public class MainServiceImpl implements IMainService {
 				colour.setState(json.getString("state"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = 0;
@@ -1083,19 +1118,19 @@ public class MainServiceImpl implements IMainService {
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1110,14 +1145,14 @@ public class MainServiceImpl implements IMainService {
 				partMessage.setParttypeid(Integer.parseInt(json.getString("parttypeid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
 				partMessage.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("specification")!=null&&!"".equals(json.getString("specification"))) {
@@ -1127,7 +1162,7 @@ public class MainServiceImpl implements IMainService {
 				partMessage.setMoney(json.getString("money"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			BicyclePartCrr bicyclePartCrr = new BicyclePartCrr();
@@ -1135,28 +1170,28 @@ public class MainServiceImpl implements IMainService {
 				bicyclePartCrr.setBicycleid(Integer.parseInt(json.getString("bicycleid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			int i = part_message_mapper.insertSelective(partMessage);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 				bicyclePartCrr.setPartmessageid(i);
 				bicyclePartCrr.setOrderno("~");
 				i =bicycle_part_crr_mapper.insert(bicyclePartCrr);
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1173,7 +1208,7 @@ public class MainServiceImpl implements IMainService {
 				criteria.andPartmessageidEqualTo(Integer.parseInt(json.getString("partmessageid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("parttypeid")!=null&&!"".equals(json.getString("parttypeid"))) {
@@ -1190,14 +1225,14 @@ public class MainServiceImpl implements IMainService {
 			}
 			int i = part_message_mapper.updateByExampleSelective(partMessage, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1211,15 +1246,15 @@ public class MainServiceImpl implements IMainService {
 			PartMessageExample example = new PartMessageExample();
 			List<PartMessage> list = part_message_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.accumulate("partmessage", list);
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("partmessage", list);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1232,18 +1267,18 @@ public class MainServiceImpl implements IMainService {
 			if(json.getString("partmessageid")!=null&&!"".equals(json.getString("partmessageid"))) {
 				int i = part_message_mapper.deleteByPrimaryKey(Integer.parseInt(json.getString("partmessageid")));
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1262,18 +1297,18 @@ public class MainServiceImpl implements IMainService {
 					}
 				}
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1289,18 +1324,18 @@ public class MainServiceImpl implements IMainService {
 				partType.setCreatetime(new Date());
 				int i = part_type_mapper.insertSelective(partType);
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1317,27 +1352,27 @@ public class MainServiceImpl implements IMainService {
 				criteria.andParttypeidEqualTo(Integer.parseInt(json.getString("parttypeid")));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
 				partType.setName(json.getString("name"));
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 			partType.setCreatetime(new Date());
 			int i = part_type_mapper.updateByExampleSelective(partType, example);
 			if(i>0) {
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1351,15 +1386,15 @@ public class MainServiceImpl implements IMainService {
 			PartTypeExample example = new PartTypeExample();
 			List<PartType> list = part_type_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.accumulate("parttype", list);
-				obj.accumulate("msg", IMyEnums.SUCCEED);
+				obj.put("parttype", list);
+				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1372,18 +1407,18 @@ public class MainServiceImpl implements IMainService {
 			if(json.getString("parttypeid")!=null&&!"".equals(json.getString("parttypeid"))) {
 				int i = part_type_mapper.deleteByPrimaryKey(Integer.parseInt(json.getString("parttypeid")));
 				if(i>0) {
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1410,12 +1445,20 @@ public class MainServiceImpl implements IMainService {
 				if(list!=null&&list.size()>0) {
 					BicyclePartCrrExample example2 = new BicyclePartCrrExample();
 					BicyclePartCrrExample.Criteria criteria2 = example2.createCriteria();
+					PhotoExample example3 = new PhotoExample();
+					PhotoExample.Criteria criteria3 = example3.createCriteria();
 					Set<PartType> partType = new HashSet<PartType>();
 					Map<PartType,List<PartMessage>> partmessage = new HashMap<PartType, List<PartMessage>>();
 					for(Bicycle bic:list) {
+						example2 = new BicyclePartCrrExample();
+						criteria2 = example2.createCriteria();
 						criteria2.andBicycleidEqualTo(bic.getBicycleid());
+						example3 = new PhotoExample();
+						criteria3 = example3.createCriteria();
+						criteria3.andBicycleidEqualTo(bic.getBicycleid());
 						//通过自行车零件信息对应表查出该自行车的所有零件
 						List<BicyclePartCrr> list2 = bicycle_part_crr_mapper.selectByExample(example2);
+						List<Photo> list3 = photo_mapper.selectByExample(example3);
 						if(list2!=null&&list2.size()>0) {
 							for(BicyclePartCrr bp:list2) {
 								//将该自行车零件所有零件及其所属零件类别进行封装
@@ -1431,20 +1474,29 @@ public class MainServiceImpl implements IMainService {
 						}
 						bic.setPartType(partType);
 						bic.setPartmessage(partmessage);
+						if(list3!=null&&list3.size()>0) {
+							for(Photo p:list3) {
+								String path = "http://127.0.0.1:9090/bicycle_pic/"+p.getPath();
+								p.setPath(path);
+							}
+							bic.setPhoto(list3);
+							bic.setFirstphoto(list3.get(0).getPath());
+							bic.setSecondphoto(list3.get(1).getPath());
+						}
 					}
-					obj.accumulate("allbicycle", list);
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					obj.put("allbicycle", list);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
@@ -1459,11 +1511,15 @@ public class MainServiceImpl implements IMainService {
 				if(bicycle!=null) {
 					BicyclePartCrrExample example2 = new BicyclePartCrrExample();
 					BicyclePartCrrExample.Criteria criteria2 = example2.createCriteria();
+					PhotoExample example3 = new PhotoExample();
+					PhotoExample.Criteria criteria3 = example3.createCriteria();
 					Set<PartType> partType = new HashSet<PartType>();
 					Map<PartType,List<PartMessage>> partmessage = new HashMap<PartType, List<PartMessage>>();
 					criteria2.andBicycleidEqualTo(bicycle.getBicycleid());
 					//通过自行车零件信息对应表查出该自行车的所有零件
 					List<BicyclePartCrr> list2 = bicycle_part_crr_mapper.selectByExample(example2);
+					criteria3.andBicycleidEqualTo(bicycle.getBicycleid());
+					List<Photo> list3 = photo_mapper.selectByExample(example3);
 					if(list2!=null&&list2.size()>0) {
 						for(BicyclePartCrr bp:list2) {
 							//将该自行车零件所有零件及其所属零件类别进行封装
@@ -1479,21 +1535,141 @@ public class MainServiceImpl implements IMainService {
 					}
 					bicycle.setPartType(partType);
 					bicycle.setPartmessage(partmessage);
-					obj.accumulate("bicycle", bicycle);
-					obj.accumulate("msg", IMyEnums.SUCCEED);
+					if(list3!=null&&list3.size()>0) {
+						for(Photo p:list3) {
+							String path = "http://127.0.0.1:9090/bicycle_pic/"+p.getPath();
+							p.setPath(path);
+						}
+						bicycle.setPhoto(list3);
+						bicycle.setFirstphoto(list3.get(0).getPath());
+						bicycle.setSecondphoto(list3.get(1).getPath());
+					}
+					obj.put("bicycle", bicycle);
+					obj.put("msg", IMyEnums.SUCCEED);
 				}
 				else {
-					obj.accumulate("msg", IMyEnums.FAIL);
+					obj.put("msg", IMyEnums.FAIL);
 					return obj.toString();
 				}
 			}
 			else {
-				obj.accumulate("msg", IMyEnums.FAIL);
+				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
 		}
 		else {
-			obj.accumulate("msg", IMyEnums.FAIL);
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+	@Override
+	public String querydelstatebicycle(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			BicycleExample example = new BicycleExample();
+			BicycleExample.Criteria criteria = example.createCriteria();
+			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
+			}
+			else {
+				example.setPageIndex(0);
+			}
+			if(json.getString("pageSize")!=null&&!"".equals(json.getString("pageSize"))) {
+				example.setPageSize(Integer.parseInt(json.getString("pageSize")));
+			}
+			else {
+				example.setPageSize(6);
+			}
+	        
+			example.setOrderByClause("createtime asc");
+			if(json.getString("delstate")!=null&&!"".equals(json.getString("delstate"))) {
+				criteria.andDelstateEqualTo(json.getString("delstate"));
+				//通过自行车分类id查出属于该分类的所有自行车
+				List<Bicycle> list = bicycle_mapper.selectByExample(example);
+				if(list!=null&&list.size()>0) {
+					BicyclePartCrrExample example2 = new BicyclePartCrrExample();
+					BicyclePartCrrExample.Criteria criteria2 = example2.createCriteria();
+					PhotoExample example3 = new PhotoExample();
+					PhotoExample.Criteria criteria3 = example3.createCriteria();
+					Set<PartType> partType = new HashSet<PartType>();
+					Map<PartType,List<PartMessage>> partmessage = new HashMap<PartType, List<PartMessage>>();
+					for(Bicycle bic:list) {
+						example2 = new BicyclePartCrrExample();
+						criteria2 = example2.createCriteria();
+						criteria2.andBicycleidEqualTo(bic.getBicycleid());
+						example3 = new PhotoExample();
+						criteria3 = example3.createCriteria();
+						criteria3.andBicycleidEqualTo(bic.getBicycleid());
+						//通过自行车零件信息对应表查出该自行车的所有零件
+						List<BicyclePartCrr> list2 = bicycle_part_crr_mapper.selectByExample(example2);
+						List<Photo> list3 = photo_mapper.selectByExample(example3);
+						if(list2!=null&&list2.size()>0) {
+							for(BicyclePartCrr bp:list2) {
+								//将该自行车零件所有零件及其所属零件类别进行封装
+								PartMessage partMessage = part_message_mapper.selectByPrimaryKey(bp.getPartmessageid());
+								PartType partType1 = part_type_mapper.selectByPrimaryKey(partMessage.getParttypeid());
+								partType.add(partType1);
+								PartMessageExample example1 = new PartMessageExample();
+								PartMessageExample.Criteria criteria1 = example1.createCriteria();
+								criteria1.andParttypeidEqualTo(partType1.getParttypeid());
+								List<PartMessage> list1 = part_message_mapper.selectByExample(example1);
+								partmessage.put(partType1, list1);
+							}
+						}
+						bic.setPartType(partType);
+						bic.setPartmessage(partmessage);
+						if(list3!=null&&list3.size()>0) {
+							for(Photo p:list3) {
+								String path = "http://127.0.0.1:9090/bicycle_pic/"+p.getPath();
+								p.setPath(path);
+							}
+							bic.setPhoto(list3);
+							bic.setFirstphoto(list3.get(0).getPath());
+							bic.setSecondphoto(list3.get(1).getPath());
+						}
+					}
+					obj.put("bicyclelist", list);
+					obj.put("msg", IMyEnums.SUCCEED);
+				}
+				else {
+					obj.put("msg", IMyEnums.FAIL);
+				}
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+			}
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+	@Override
+	public String queryshopcarnum(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			obj.put("msg", IMyEnums.SUCCEED);
+			Shopcar shopcar = new Shopcar();
+			ShopcarExample example = new ShopcarExample();
+			ShopcarExample.Criteria criteria = example.createCriteria();
+			if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
+				shopcar.setUserid(Integer.parseInt(json.getString("userid")));
+				criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+				return obj.toString();
+			}
+			long i = shopcar_mapper.countByExample(example);
+			obj.put("shopcarnum", i);
+			obj.put("msg", IMyEnums.SUCCEED);
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
 		}
 		return obj.toString();
 	}
