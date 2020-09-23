@@ -36,7 +36,7 @@ public class UserController {
     		return jsonobj;
     	}
     	catch (Exception e) {
-    		MyLog.log.debug("登录失败："+e.getMessage());
+    		MyLog.log.debug("用户登录失败："+e.getMessage());
     		obj.put("msg", IMyEnums.FAIL);
 			return obj.toString();
 		}
@@ -322,5 +322,219 @@ public class UserController {
     		obj.put("msg", IMyEnums.FAIL);
 			return obj.toString();
 		}
+    }
+    
+    /**
+     * 查询所有用户
+     * @param message
+     * @return
+     */
+    @RequestMapping(value = "queryAllUserList")
+    @ResponseBody
+    public String queryAllUserList(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.queryalluser(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("修改用户密码失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    
+    /**
+     * 修改用户信息
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "updateUser")
+    @ResponseBody
+    public String updateUser(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.updateuser(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("修改用户信息失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 改变用户状态
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "setUserState")
+    @ResponseBody
+    public String setUserState(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.setuserstatus(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("改变用户状态失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 批量改变用户状态
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "setUserListState")
+    @ResponseBody
+    public String setUserListState(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.setuserliststatus(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("批量改变用户状态失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 删除用户信息
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "deleteUser")
+    @ResponseBody
+    public String deleteUser(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.deleteuser(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("删除用户信息失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 批量删除用户信息
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "deleteListUser")
+    @ResponseBody
+    public String deleteListUser(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.deletelistuser(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("批量删除用户信息失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 添加用户信息
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "insertUser")
+    @ResponseBody
+    public String insertUser(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.userregister(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("添加用户信息失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 添加用户反馈
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "insertUserFeedBack")
+    @ResponseBody
+    public String insertUserFeedBack(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.insertfeedback(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("添加用户反馈失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 查询用户反馈
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "queryUserFeedBack")
+    @ResponseBody
+    public String queryUserFeedBack(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.queryuserallfeedback(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("查询用户反馈失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
     }
 }

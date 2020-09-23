@@ -32,25 +32,28 @@ public class MainController {
 	IUserService user_service;
 	public static void main(String[] args) {
 		String str="<table class=\"table table-bordered\">\r\n" + 
-				"																<thead class=\"thead-light\">\r\n" + 
-				"																	<tr>\r\n" + 
-				"																		<th>编号</th>\r\n" + 
-				"																		<th>姓名</th>\r\n" + 
-				"																		<th>地址</th>\r\n" + 
-				"																		<th>电话</th>\r\n" + 
-				"																		<th>操作</th>\r\n" + 
-				"																	</tr>\r\n" + 
-				"																</thead>\r\n" + 
-				"																<tbody>\r\n" + 
-				"																	<tr>\r\n" + 
-				"																		<td>1</td>\r\n" + 
-				"																		<td><strong>Erik Jhonson</strong></td>\r\n" + 
-				"																		<td>1355 Market St, Suite 900 <br> San Francisco, CA 94103</td>\r\n" + 
-				"																		<td>Mobile: (123) 456-7890</td>\r\n" + 
-				"																		<td><i class=\"fa fa-trash-o\"></i> <i class=\"fa fa-file-word-o\"></i></td>\r\n" + 
-				"																	</tr>\r\n" + 
-				"																</tbody>\r\n" + 
-				"															</table>";
+				"											<thead>\r\n" + 
+				"												<tr>\r\n" + 
+				"													<th><strong>商品</strong></th>\r\n" + 
+				"													<th><strong>总价</strong></th>\r\n" + 
+				"												</tr>\r\n" + 
+				"											</thead>\r\n" + 
+				"											<tbody>\r\n" + 
+				"												<tr>\r\n" + 
+				"													<td>\r\n" + 
+				"														<a href=\"product-details.html\">MY20 OCR Classic公路自行车 <strong> × 1</strong></a>\r\n" + 
+				"													</td>\r\n" + 
+				"													<td>$6998.00</td>\r\n" + 
+				"												</tr>\r\n" + 
+				"												\r\n" + 
+				"											</tbody>\r\n" + 
+				"											<tfoot>\r\n" + 
+				"												<tr>\r\n" + 
+				"													<td>合计金额</td>\r\n" + 
+				"													<td>$6998.00</td>\r\n" + 
+				"												</tr>																								\r\n" + 
+				"											</tfoot>\r\n" + 
+				"										</table>";
 	}
 	/**
      *  显示所有自行车信息 根据自行车类别查询 分页
@@ -66,6 +69,29 @@ public class MainController {
     	try {
     		System.err.println(message);
     		String jsonobj = main_service.querybicycle(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("自行车信息查询失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     *  显示所有自行车信息
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "queryAllBicycle")
+    @ResponseBody
+    public String queryAllBicycle(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.queryallbicycle(message);
     		return jsonobj;
     	}
     	catch (Exception e) {
@@ -184,7 +210,7 @@ public class MainController {
     }
     
     /**
-     * 通过自行车状态查询6辆自行车信息
+     * 通过自行车状态查询8辆自行车信息
      * @param message
      * @param request
      * @param response
@@ -200,7 +226,8 @@ public class MainController {
     		return jsonobj;
     	}
     	catch (Exception e) {
-    		MyLog.log.debug("通过自行车状态6辆自行车信息查询失败："+e.getMessage());
+    		e.printStackTrace();
+    		MyLog.log.debug("通过自行车状态8辆自行车信息查询失败："+e.getMessage());
     		obj.put("msg", IMyEnums.FAIL);
 			return obj.toString();
 		}
@@ -265,6 +292,7 @@ public class MainController {
     		return jsonobj;
     	}
     	catch (Exception e) {
+    		e.printStackTrace();
     		MyLog.log.debug("查询某个用户购物车失败："+e.getMessage());
     		obj.put("msg", IMyEnums.FAIL);
 			return obj.toString();
@@ -330,6 +358,147 @@ public class MainController {
     	catch (Exception e) {
     		e.printStackTrace();
     		MyLog.log.debug("发送验证码失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 修改商品状态
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "delProduct")
+    @ResponseBody
+    public String delProduct(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.updatebicyclestatus(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("修改商品状态失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 批量修改商品状态
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "delListProduct")
+    @ResponseBody
+    public String delListProduct(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.updatebicycleliststatus(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("批量修改商品状态失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 彻底删除商品
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "removeProduct")
+    @ResponseBody
+    public String removeProduct(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.deletebicycle(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("彻底删除商品失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+        
+    }
+    
+    /**
+     * 批量彻底删除商品
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "removeListProduct")
+    @ResponseBody
+    public String removeListProduct(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.deletelistbicycle(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("批量彻底删除商品失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 添加订单
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "insertOrder")
+    @ResponseBody
+    public String insertOrder(String message,HttpServletRequest request){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.insertorder(message, request);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("添加订单失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 通过订单编号查询订单详情
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "queryOrderDetailByOrderNo")
+    @ResponseBody
+    public String queryOrderDetailByOrderNo(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.queryorderdetail(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("通过订单编号查询订单详情失败："+e.getMessage());
     		obj.put("msg", IMyEnums.FAIL);
 			return obj.toString();
 		}

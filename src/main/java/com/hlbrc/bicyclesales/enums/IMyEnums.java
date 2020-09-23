@@ -8,6 +8,8 @@ public interface IMyEnums {
     public final static String DELETE = "0";
     /**正常*/
     public final static String NORMAL = "1";
+    /**彻底删除*/
+    public final static String THOROUGHDELETE = "-1";
     
     /**
      * 用户状态
@@ -49,6 +51,8 @@ public interface IMyEnums {
 	public final static int ADDRESS_DEFAULT = 1;
 	/**该地址已删除*/
 	public final static int ADDRESS_DEL = 2;
+	/**该用户没有收货地址*/
+	public final static String ADDRESS_NOT_LIST = "NOT_LIST";
 	
     /**
      * 提示信息

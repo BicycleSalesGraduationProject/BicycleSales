@@ -184,6 +184,11 @@ public interface IMainService {
      */
 	public String querybicycle(String message);
 	/**
+     * 显示所有自行车信息 分页
+     * @param message
+     */
+	public String queryallbicycle(String message);
+	/**
      * 通过自行车id查看自行车信息
      * @param message
      */

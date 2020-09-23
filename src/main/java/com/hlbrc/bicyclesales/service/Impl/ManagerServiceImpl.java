@@ -34,7 +34,7 @@ public class ManagerServiceImpl implements IManagerService{
 			List<Administrator> list = administrator_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
 				session.setAttribute("administrator", list.get(0));
-				obj.put("administrator", JSONObject.fromObject(list.get(0)));
+				obj.put("administrator", list.get(0));
 				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
@@ -150,7 +150,13 @@ public class ManagerServiceImpl implements IManagerService{
 			}
 			AdministratorExample example = new AdministratorExample();
 			AdministratorExample.Criteria criteria = example.createCriteria();
-			criteria.andAdministratoridEqualTo(Integer.parseInt(json.getString("administratorid")));
+			if(json.getString("administratorid")!=null&&!"".equals(json.getString("administratorid"))) {
+				criteria.andAdministratoridEqualTo(Integer.parseInt(json.getString("administratorid")));
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+				return obj.toString();
+			}
 			int i = administrator_mapper.updateByExampleSelective(administrator,example);
 			if(i>0) {
 				obj.put("msg", IMyEnums.SUCCEED);

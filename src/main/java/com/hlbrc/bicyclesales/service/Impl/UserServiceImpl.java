@@ -119,6 +119,7 @@ public class UserServiceImpl implements IUserService {
 				user.setEmail(json.getString("email"));
 			}
 			user.setUserstate(IMyEnums.NORMAL);
+			user.setDelstate(IMyEnums.NORMAL);
 			user.setCreatetime(new Date());
 			int i = user_mapper.insertSelective(user);
 			if(i>0) {
@@ -801,14 +802,25 @@ public class UserServiceImpl implements IUserService {
 			UserExample example = new UserExample();
 			UserExample.Criteria criteria = example.createCriteria();
 			example.setOrderByClause("createTime ASC");
-			example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
-	        example.setPageSize(2);
+			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
+			}
+			else {
+				example.setPageIndex(0);
+			}
+	        example.setPageSize(10);
 	        if(json.getString("username")!=null&&!"".equals(json.getString("username"))) {
 	        	criteria.andNameLike("%"+json.getString("username")+"%");
 	        }
+	        if(json.getString("sex")!=null&&!"".equals(json.getString("sex"))) {
+	        	criteria.andSexLike("%"+json.getString("sex")+"%");
+	        }
+	        if(json.getString("age")!=null&&!"".equals(json.getString("age"))) {
+	        	criteria.andAgeEqualTo(Integer.parseInt(json.getString("age")));
+	        }
 	        List<User> list = user_mapper.selectByExample(example);
 	        if(list!=null&&list.size()>0) {
-	        	obj.put("alluser", JSONObject.fromObject(list));
+	        	obj.put("alluser", list);
 	        	obj.put("msg", IMyEnums.SUCCEED);
 	        }
 	        else {
@@ -832,6 +844,9 @@ public class UserServiceImpl implements IUserService {
 			UserExample.Criteria criteria = example.createCriteria();
 			if(json.getString("userstate")!=null&&!"".equals(json.getString("userstate"))) {
 				user.setUserstate(json.getString("userstate"));
+			}
+			if(json.getString("delstate")!=null&&!"".equals(json.getString("delstate"))) {
+				user.setDelstate(json.getString("delstate"));
 			}
 			if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
 				example = new UserExample();
@@ -867,31 +882,31 @@ public class UserServiceImpl implements IUserService {
 			User user = new User();
 			UserExample example = new UserExample();
 			UserExample.Criteria criteria = example.createCriteria();
-			if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
-				example = new UserExample();
-				criteria = example.createCriteria();
-				criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
+			if(json.getString("userstate")!=null&&!"".equals(json.getString("userstate"))) {
+				user.setUserstate(json.getString("userstate"));
 			}
-			else {
-				obj.put("msg", IMyEnums.FAIL);
-				return obj.toString();
+			if(json.getString("delstate")!=null&&!"".equals(json.getString("delstate"))) {
+				user.setDelstate(json.getString("delstate"));
 			}
 			int i = 0;
-			if(json.getString("userstates")!=null&&!"".equals(json.getString("userstates"))) {
-				String[] userstates = json.getString("userstates").split(";");
-				if(userstates!=null&&userstates.length>0) {
-					for(String state:userstates) {
-						user.setUpdatetime(new Timestamp(new Date().getTime()).toString());
-						user.setUserstate(state);
+			if(json.getString("userids")!=null&&!"".equals(json.getString("userids"))) {
+				String[] userids = json.getString("userids").split(";");
+				if(userids!=null&&userids.length>0) {
+					for(String id:userids) {
+						example = new UserExample();
+						criteria = example.createCriteria();
+						criteria.andUseridEqualTo(Integer.parseInt(id));
 						i += user_mapper.updateByExampleSelective(user, example);
 					}
 				}
 				else {
 					obj.put("msg", IMyEnums.FAIL);
+					return obj.toString();
 				}
 			}
 			else {
 				obj.put("msg", IMyEnums.FAIL);
+				return obj.toString();
 			}
 			if(i>0) {
 				obj.put("msg", IMyEnums.SUCCEED);

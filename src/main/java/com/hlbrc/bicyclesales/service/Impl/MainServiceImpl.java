@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hlbrc.bicyclesales.entity.Address;
+import com.hlbrc.bicyclesales.entity.AddressExample;
 import com.hlbrc.bicyclesales.entity.Bicycle;
 import com.hlbrc.bicyclesales.entity.BicycleExample;
 import com.hlbrc.bicyclesales.entity.BicyclePartCrr;
@@ -34,6 +36,7 @@ import com.hlbrc.bicyclesales.entity.PhotoExample;
 import com.hlbrc.bicyclesales.entity.Shopcar;
 import com.hlbrc.bicyclesales.entity.ShopcarExample;
 import com.hlbrc.bicyclesales.enums.IMyEnums;
+import com.hlbrc.bicyclesales.mapper.IAddressMapper;
 import com.hlbrc.bicyclesales.mapper.IBicycleMapper;
 import com.hlbrc.bicyclesales.mapper.IBicyclePartCrrMapper;
 import com.hlbrc.bicyclesales.mapper.IBicycleTypeMapper;
@@ -45,6 +48,7 @@ import com.hlbrc.bicyclesales.mapper.IPartTypeMapper;
 import com.hlbrc.bicyclesales.mapper.IPhotoMapper;
 import com.hlbrc.bicyclesales.mapper.IShopcarMapper;
 import com.hlbrc.bicyclesales.service.IMainService;
+import com.hlbrc.bicyclesales.service.IUserService;
 import com.hlbrc.bicyclesales.util.Token;
 
 import net.sf.json.JSONObject;
@@ -71,6 +75,9 @@ public class MainServiceImpl implements IMainService {
 	IColourMapper colour_mapper;
 	@Autowired
 	IPhotoMapper photo_mapper;
+	@Autowired
+	IAddressMapper address_mapper;
+	
 	@Override
 	public String insertshopcar(String message) {
 		JSONObject obj = new JSONObject();
@@ -256,7 +263,9 @@ public class MainServiceImpl implements IMainService {
 					bicycle.setPhoto(list1);
 					if(list1!=null&&list1.size()>0) {
 						bicycle.setFirstphoto("http://127.0.0.1:9090/bicycle_pic/"+list1.get(0).getPath());
-						bicycle.setSecondphoto("http://127.0.0.1:9090/bicycle_pic/"+list1.get(1).getPath());
+						if(list1!=null&&list1.size()>1) {
+							bicycle.setSecondphoto("http://127.0.0.1:9090/bicycle_pic/"+list1.get(1).getPath());
+						}
 					}
 					s.setBicycle(bicycle);
 				}
@@ -277,12 +286,27 @@ public class MainServiceImpl implements IMainService {
 	public String insertorder(String message,HttpServletRequest request) {
 		JSONObject obj = new JSONObject();
 		JSONObject json = new JSONObject();
-		if ("true".equals(Token.validToken(request))) {//校验令牌，防止重复提交
+//		if ("true".equals(Token.validToken(request))) {//校验令牌，防止重复提交
 			if(message!=null&&!"".equals(message)) {
 				json = JSONObject.fromObject(message);
 				OrderForm orderform = new OrderForm();
-				if(json.getString("adsid")!=null&&!"".equals(json.getString("adsid"))) {
-					orderform.setAdsid(Integer.parseInt(json.getString("adsid")));
+				if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
+					AddressExample example = new AddressExample();
+					AddressExample.Criteria criteria = example.createCriteria();
+					criteria.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
+					List<Address> list = address_mapper.selectByExample(example);
+					if(list!=null&&list.size()>0) {
+						for(Address a:list) {
+							if(a.getAdsdefault().equals(IMyEnums.ADDRESS_DEFAULT+"")) {
+								orderform.setAdsid(a.getAdsid());
+							}
+						}
+					}
+					else {
+						obj.put("msg", IMyEnums.ADDRESS_NOT_LIST);
+						return obj.toString();
+					}
+					
 				}
 				else {
 					obj.put("msg", IMyEnums.FAIL);
@@ -321,27 +345,35 @@ public class MainServiceImpl implements IMainService {
 						for(int j=0;j<array.size();j++) {
 							orderformdetail.setBicycleid(Integer.parseInt(array.getJSONObject(j).getString("bicycleid")));
 							orderformdetail.setNum(Double.parseDouble(array.getJSONObject(j).getString("num")));
-							orderformdetail.setMoney(Double.parseDouble(array.getJSONObject(j).getString("money")));
-							String[] partmessageids = array.getJSONObject(j).getString("partmessageids").split(";");
+							orderformdetail.setMoney(Double.parseDouble(array.getJSONObject(j).getString("total")));
+							System.err.println("shopcarid:"+array.getJSONObject(j).getString("shopcarid"));
+							i +=shopcar_mapper.deleteByPrimaryKey(Integer.parseInt(array.getJSONObject(j).getString("shopcarid")));
+							String parts = array.getJSONObject(j).getJSONObject("bicycle").getString("partmessageids");
+							String[] partmessageids = null;
+							if(parts!=null&&!"".equals(parts)) {
+								partmessageids = parts.split(";");
+							}
 							criteria.andBicycleidEqualTo(Integer.parseInt(array.getJSONObject(j).getString("bicycleid")));
 							//添加订单详情
 							i += order_form_detail_mapper.insertSelective(orderformdetail);
 							//删除购物车
 							i += shopcar_mapper.deleteByExample(example);
 							BicyclePartCrr bicyclepartcrr = new BicyclePartCrr();
-							for(String id:partmessageids) 
-							{
-								//添加自行车零件信息对应表
-								bicyclepartcrr.setBicycleid(Integer.parseInt(array.getJSONObject(j).getString("bicycleid")));
-								bicyclepartcrr.setPartmessageid(Integer.parseInt(id));
-								bicyclepartcrr.setOrderno(orderno);
-								i += bicycle_part_crr_mapper.insertSelective(bicyclepartcrr);
+							if(partmessageids!=null&&partmessageids.length>0) {
+								for(String id:partmessageids) 
+								{
+									//添加自行车零件信息对应表
+									bicyclepartcrr.setBicycleid(Integer.parseInt(array.getJSONObject(j).getString("bicycleid")));
+									bicyclepartcrr.setPartmessageid(Integer.parseInt(id));
+									bicyclepartcrr.setOrderno(orderno);
+									i += bicycle_part_crr_mapper.insertSelective(bicyclepartcrr);
+								}
 							}
-							
 						}
 						if(i>0) {
 							//设置令牌
 							Token.setToken(request);
+							obj.put("orderno", orderno);
 							obj.put("msg", IMyEnums.SUCCEED);
 						}
 						else {
@@ -361,7 +393,7 @@ public class MainServiceImpl implements IMainService {
 			else {
 				obj.put("msg", IMyEnums.FAIL);
 			}
-		}
+//		}
 		return obj.toString();
 	}
 	@Override
@@ -681,6 +713,8 @@ public class MainServiceImpl implements IMainService {
 				String[] bicycleids = json.getString("bicycleids").split(";");
 				if(bicycleids!=null&&bicycleids.length>0) {
 					for(String id:bicycleids) {
+						example = new BicycleExample();
+						criteria = example.createCriteria();
 						criteria.andBicycleidEqualTo(Integer.parseInt(id));
 						bicycle.setUpdatetime(new Date());
 						i +=bicycle_mapper.updateByExampleSelective(bicycle, example);
@@ -708,6 +742,7 @@ public class MainServiceImpl implements IMainService {
 	public String deletebicycle(String message) {
 		JSONObject obj = new JSONObject();
 		JSONObject json = new JSONObject();
+		System.err.println("message:"+message);
 		if(message!=null&&!"".equals(message)) {
 			json = JSONObject.fromObject(message);
 			if(json.getString("bicycleid")!=null&&!"".equals(json.getString("bicycleid"))) {
@@ -1430,6 +1465,7 @@ public class MainServiceImpl implements IMainService {
 			json = JSONObject.fromObject(message);
 			BicycleExample example = new BicycleExample();
 			BicycleExample.Criteria criteria = example.createCriteria();
+			criteria.andDelstateGreaterThan("0");
 			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
 				example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
 			}
@@ -1481,7 +1517,9 @@ public class MainServiceImpl implements IMainService {
 							}
 							bic.setPhoto(list3);
 							bic.setFirstphoto(list3.get(0).getPath());
-							bic.setSecondphoto(list3.get(1).getPath());
+							if(list3!=null&&list3.size()>1) {
+								bic.setSecondphoto(list3.get(1).getPath());
+							}
 						}
 					}
 					obj.put("allbicycle", list);
@@ -1494,6 +1532,84 @@ public class MainServiceImpl implements IMainService {
 			else {
 				obj.put("msg", IMyEnums.FAIL);
 			}
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+	@Override
+	public String queryallbicycle(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			BicycleExample example = new BicycleExample();
+			BicycleExample.Criteria criteria = example.createCriteria();
+			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
+			}
+			else {
+				example.setPageIndex(0);
+			}
+			if(json.getString("name")!=null&&!"".equals(json.getString("name"))) {
+				criteria.andNameLike("%"+(json.getString("name"))+"%");
+			}
+	        example.setPageSize(10);
+			example.setOrderByClause("createtime asc");
+			//通过自行车分类id查出属于该分类的所有自行车
+			List<Bicycle> list = bicycle_mapper.selectByExample(example);
+			if(list!=null&&list.size()>0) {
+				BicyclePartCrrExample example2 = new BicyclePartCrrExample();
+				BicyclePartCrrExample.Criteria criteria2 = example2.createCriteria();
+				PhotoExample example3 = new PhotoExample();
+				PhotoExample.Criteria criteria3 = example3.createCriteria();
+				Set<PartType> partType = new HashSet<PartType>();
+				Map<PartType,List<PartMessage>> partmessage = new HashMap<PartType, List<PartMessage>>();
+				for(Bicycle bic:list) {
+					example2 = new BicyclePartCrrExample();
+					criteria2 = example2.createCriteria();
+					criteria2.andBicycleidEqualTo(bic.getBicycleid());
+					example3 = new PhotoExample();
+					criteria3 = example3.createCriteria();
+					criteria3.andBicycleidEqualTo(bic.getBicycleid());
+					//通过自行车零件信息对应表查出该自行车的所有零件
+					List<BicyclePartCrr> list2 = bicycle_part_crr_mapper.selectByExample(example2);
+					List<Photo> list3 = photo_mapper.selectByExample(example3);
+					if(list2!=null&&list2.size()>0) {
+						for(BicyclePartCrr bp:list2) {
+							//将该自行车零件所有零件及其所属零件类别进行封装
+							PartMessage partMessage = part_message_mapper.selectByPrimaryKey(bp.getPartmessageid());
+							PartType partType1 = part_type_mapper.selectByPrimaryKey(partMessage.getParttypeid());
+							partType.add(partType1);
+							PartMessageExample example1 = new PartMessageExample();
+							PartMessageExample.Criteria criteria1 = example1.createCriteria();
+							criteria1.andParttypeidEqualTo(partType1.getParttypeid());
+							List<PartMessage> list1 = part_message_mapper.selectByExample(example1);
+							partmessage.put(partType1, list1);
+						}
+					}
+					bic.setPartType(partType);
+					bic.setPartmessage(partmessage);
+					if(list3!=null&&list3.size()>0) {
+						for(Photo p:list3) {
+							String path = "http://127.0.0.1:9090/bicycle_pic/"+p.getPath();
+							p.setPath(path);
+						}
+						bic.setPhoto(list3);
+						bic.setFirstphoto(list3.get(0).getPath());
+						if(list3!=null&&list3.size()>1) {
+							bic.setSecondphoto(list3.get(1).getPath());
+						}
+					}
+				}
+				obj.put("allbicycle", list);
+				obj.put("msg", IMyEnums.SUCCEED);
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+			}
+			
 		}
 		else {
 			obj.put("msg", IMyEnums.FAIL);
@@ -1580,7 +1696,7 @@ public class MainServiceImpl implements IMainService {
 				example.setPageSize(Integer.parseInt(json.getString("pageSize")));
 			}
 			else {
-				example.setPageSize(6);
+				example.setPageSize(8);
 			}
 	        
 			example.setOrderByClause("createtime asc");
@@ -1627,7 +1743,9 @@ public class MainServiceImpl implements IMainService {
 							}
 							bic.setPhoto(list3);
 							bic.setFirstphoto(list3.get(0).getPath());
+							if(list3!=null&&list3.size()>1) {
 							bic.setSecondphoto(list3.get(1).getPath());
+							}
 						}
 					}
 					obj.put("bicyclelist", list);

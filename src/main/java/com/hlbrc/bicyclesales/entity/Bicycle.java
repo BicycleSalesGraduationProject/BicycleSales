@@ -31,6 +31,16 @@ public class Bicycle {
     private String firstphoto;
     
     private String secondphoto;
+    
+    private String partmessageids;
+
+	public String getPartmessageids() {
+		return partmessageids;
+	}
+
+	public void setPartmessageids(String partmessageids) {
+		this.partmessageids = partmessageids;
+	}
 
 	public String getFirstphoto() {
 		return firstphoto;
