@@ -30,31 +30,6 @@ public class MainController {
 	IMainService main_service;
 	@Autowired
 	IUserService user_service;
-	public static void main(String[] args) {
-		String str="<table class=\"table table-bordered\">\r\n" + 
-				"											<thead>\r\n" + 
-				"												<tr>\r\n" + 
-				"													<th><strong>商品</strong></th>\r\n" + 
-				"													<th><strong>总价</strong></th>\r\n" + 
-				"												</tr>\r\n" + 
-				"											</thead>\r\n" + 
-				"											<tbody>\r\n" + 
-				"												<tr>\r\n" + 
-				"													<td>\r\n" + 
-				"														<a href=\"product-details.html\">MY20 OCR Classic公路自行车 <strong> × 1</strong></a>\r\n" + 
-				"													</td>\r\n" + 
-				"													<td>$6998.00</td>\r\n" + 
-				"												</tr>\r\n" + 
-				"												\r\n" + 
-				"											</tbody>\r\n" + 
-				"											<tfoot>\r\n" + 
-				"												<tr>\r\n" + 
-				"													<td>合计金额</td>\r\n" + 
-				"													<td>$6998.00</td>\r\n" + 
-				"												</tr>																								\r\n" + 
-				"											</tfoot>\r\n" + 
-				"										</table>";
-	}
 	/**
      *  显示所有自行车信息 根据自行车类别查询 分页
      * @param message
@@ -334,7 +309,7 @@ public class MainController {
     		if(message!=null&&!"".equals(message)) {
     			JSONObject json = JSONObject.fromObject(message);
     			if(json.getString("email")!=null&&!"".equals(json.getString("email"))) {
-    				if(QqEmailSendMessage.sendEmail(json.getString("email"), request)) {
+					if(QqEmailSendMessage.sendEmail(json.getString("email"), request)) {
     					String code =  (String) request.getSession().getAttribute("appEmailVerifyCode");
     					obj.put("code", MD5.getMD5(code));
     					obj.put("msg", IMyEnums.SUCCEED);
@@ -344,6 +319,56 @@ public class MainController {
     					obj.put("msg", IMyEnums.FAIL);
     					return obj.toString();
     				}
+    			}
+    			else {
+    				obj.put("msg", IMyEnums.FAIL);
+    				return obj.toString();
+    			}
+    		}
+    		else {
+    			obj.put("msg", IMyEnums.FAIL);
+    			return obj.toString();
+    		}
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    		MyLog.log.debug("发送验证码失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 忘记密码发送验证码
+     * @param message
+     * @return
+     */
+    @RequestMapping(value = "sendVisCodeForget")
+    @ResponseBody
+    public String sendVisCodeForget(String message,HttpServletRequest request){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		if(message!=null&&!"".equals(message)) {
+    			JSONObject json = JSONObject.fromObject(message);
+    			if(json.getString("email")!=null&&!"".equals(json.getString("email"))) {
+    				JSONObject obj1 = JSONObject.fromObject(user_service.queryuserByEmail(message));
+    				if(!"no".equals(obj1.getString("msg"))) {
+    					if(QqEmailSendMessage.sendEmail(json.getString("email"), request)) {
+        					String code =  (String) request.getSession().getAttribute("appEmailVerifyCode");
+        					obj.put("code", MD5.getMD5(code));
+        					obj.put("msg", IMyEnums.SUCCEED);
+        					return obj.toString();
+        				}
+        				else {
+        					obj.put("msg", IMyEnums.FAIL);
+        					return obj.toString();
+        				}
+    				}
+    				else {
+    					obj.put("msg", IMyEnums.EMAIL_NOT_ALREADY_EXISTS);
+    					return obj.toString();
+    				}
+    				
     			}
     			else {
     				obj.put("msg", IMyEnums.FAIL);
@@ -503,4 +528,97 @@ public class MainController {
 			return obj.toString();
 		}
     }
+    
+    /**
+     * 通过用户id查询订单
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "queryOrderByUserId")
+    @ResponseBody
+    public String queryOrderByUserId(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.queryorderByUserId(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("通过用户id查询订单失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 查询所有订单
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "queryAllOrder")
+    @ResponseBody
+    public String queryAllOrder(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.queryallorder(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("查询所有订单失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 	设置订单状态
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "setOrderStatus")
+    @ResponseBody
+    public String setOrderStatus(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.updateorderstatus(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("设置订单状态失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 	批量设置订单状态
+     * @param message
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "setOrderListStatus")
+    @ResponseBody
+    public String setOrderListStatus(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = main_service.updateorderliststatus(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("批量设置订单状态失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+
 }

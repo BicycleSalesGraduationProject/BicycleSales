@@ -591,11 +591,16 @@ public class UserServiceImpl implements IUserService {
 			json = JSONObject.fromObject(message);
 			FeedBackExample example = new FeedBackExample();
 			example.setOrderByClause("createTime ASC");
-			example.setPageIndex(Integer.parseInt(json.getString("pageIndex"))-1);
-	        example.setPageSize(2);
+			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex")));
+			}
+			else {
+				example.setPageIndex(0);
+			}
+	        example.setPageSize(10);
 			List<FeedBack> list = feed_back_mapper.selectByExample(example);
 			if(list!=null&&list.size()>0) {
-				obj.put("allfeedback", JSONObject.fromObject(list));
+				obj.put("allfeedback", list);
 				obj.put("msg", IMyEnums.SUCCEED);
 			}
 			else {
@@ -1042,6 +1047,43 @@ public class UserServiceImpl implements IUserService {
 			long i = collect_mapper.countByExample(example);
 			obj.put("collectnum", i);
 			obj.put("msg", IMyEnums.SUCCEED);
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+
+	@Override
+	public String updateuserpasswordByEmail(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			json = JSONObject.fromObject(message);
+			User user = new User();
+			UserExample example = new UserExample();
+			UserExample.Criteria criteria = example.createCriteria();
+			if(json.getString("password")!=null&&!"".equals(json.getString("password"))) {
+				user.setPassword(MD5.getMD5(json.getString("password")));
+			}
+			if(json.getString("email")!=null&&!"".equals(json.getString("email"))) {
+				example = new UserExample();
+				criteria = example.createCriteria();
+				criteria.andEmailEqualTo(json.getString("email"));
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+				return obj.toString();
+			}
+			user.setUpdatetime(new Timestamp(new Date().getTime()).toString());
+			int i = user_mapper.updateByExampleSelective(user, example);
+			if(i>0) {
+				obj.put("msg", IMyEnums.SUCCEED);
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+			}
 		}
 		else {
 			obj.put("msg", IMyEnums.FAIL);

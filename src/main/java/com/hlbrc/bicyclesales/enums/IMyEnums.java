@@ -41,6 +41,10 @@ public interface IMyEnums {
     public final static String ORDER_REFUND = "5";
     /**完成*/
     public final static String ORDER_FINISHED = "6";
+    /**配货中*/
+    public final static String ORDER_DISTRIBUTION = "7";
+    /**配送中*/
+    public final static String ORDER_DISPATCHING = "8";
     
     /**
 	 * 地址状态
@@ -83,6 +87,8 @@ public interface IMyEnums {
     public final static String ADMINISTRATOR_NAME_ALREADY_EXISTS = "no_9";
     /**用户未登录*/
     public final static String USER_NOT_LOGIN = "no_10";
+    /**邮箱地址不存在*/
+    public final static String EMAIL_NOT_ALREADY_EXISTS = "no_11";
     
     /**
      * 推荐至（自行车状态）

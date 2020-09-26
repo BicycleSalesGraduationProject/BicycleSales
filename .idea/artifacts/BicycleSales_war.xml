@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="BookShopSystemMaven.war">
+    <root id="archive" name="BicycleSales.war">
       <element id="artifact" artifact-name="BicycleSales:war exploded" />
     </root>
   </artifact>

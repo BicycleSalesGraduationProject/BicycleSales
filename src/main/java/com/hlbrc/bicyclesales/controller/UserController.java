@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hlbrc.bicyclesales.enums.IMyEnums;
 import com.hlbrc.bicyclesales.service.IUserService;
-import com.hlbrc.bicyclesales.util.MD5;
 import com.hlbrc.bicyclesales.util.MyLog;
 
 import net.sf.json.JSONObject;
@@ -54,7 +53,7 @@ public class UserController {
     	JSONObject obj = new JSONObject();
     	try {
     		System.err.println(message);
-    		String jsonobj = "qweqwe";
+    		String jsonobj = user_service.userregister(message);
     		return jsonobj;
     	}
     	catch (Exception e) {
@@ -319,6 +318,27 @@ public class UserController {
     	}
     	catch (Exception e) {
     		MyLog.log.debug("修改用户密码失败："+e.getMessage());
+    		obj.put("msg", IMyEnums.FAIL);
+			return obj.toString();
+		}
+    }
+    
+    /**
+     * 通过邮箱地址修改用户密码
+     * @param message
+     * @return
+     */
+    @RequestMapping(value = "updateUserPasswordByEmail")
+    @ResponseBody
+    public String updateUserPasswordByEmail(String message){
+    	JSONObject obj = new JSONObject();
+    	try {
+    		System.err.println(message);
+    		String jsonobj = user_service.updateuserpasswordByEmail(message);
+    		return jsonobj;
+    	}
+    	catch (Exception e) {
+    		MyLog.log.debug("通过邮箱地址修改用户密码失败："+e.getMessage());
     		obj.put("msg", IMyEnums.FAIL);
 			return obj.toString();
 		}

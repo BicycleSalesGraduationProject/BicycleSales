@@ -1,6 +1,7 @@
 package com.hlbrc.bicyclesales.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class OrderForm {
     private Integer orderformid;
@@ -18,8 +19,38 @@ public class OrderForm {
     private Date createtime;
 
     private String orderno;
+    
+    private List<OrderFormDetail> orderFormDetails;
+    
+    private Address address;
+    
+    private User user;
 
-    public Integer getOrderformid() {
+    public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<OrderFormDetail> getOrderFormDetails() {
+		return orderFormDetails;
+	}
+
+	public void setOrderFormDetails(List<OrderFormDetail> orderFormDetails) {
+		this.orderFormDetails = orderFormDetails;
+	}
+
+	public Integer getOrderformid() {
         return orderformid;
     }
 

@@ -35,6 +35,7 @@ import com.hlbrc.bicyclesales.entity.Photo;
 import com.hlbrc.bicyclesales.entity.PhotoExample;
 import com.hlbrc.bicyclesales.entity.Shopcar;
 import com.hlbrc.bicyclesales.entity.ShopcarExample;
+import com.hlbrc.bicyclesales.entity.User;
 import com.hlbrc.bicyclesales.enums.IMyEnums;
 import com.hlbrc.bicyclesales.mapper.IAddressMapper;
 import com.hlbrc.bicyclesales.mapper.IBicycleMapper;
@@ -47,8 +48,9 @@ import com.hlbrc.bicyclesales.mapper.IPartMessageMapper;
 import com.hlbrc.bicyclesales.mapper.IPartTypeMapper;
 import com.hlbrc.bicyclesales.mapper.IPhotoMapper;
 import com.hlbrc.bicyclesales.mapper.IShopcarMapper;
+import com.hlbrc.bicyclesales.mapper.IUserMapper;
+import com.hlbrc.bicyclesales.service.IAddressService;
 import com.hlbrc.bicyclesales.service.IMainService;
-import com.hlbrc.bicyclesales.service.IUserService;
 import com.hlbrc.bicyclesales.util.Token;
 
 import net.sf.json.JSONObject;
@@ -77,6 +79,10 @@ public class MainServiceImpl implements IMainService {
 	IPhotoMapper photo_mapper;
 	@Autowired
 	IAddressMapper address_mapper;
+	@Autowired
+	IUserMapper user_mapper;
+	@Autowired
+	IAddressService address_service;
 	
 	@Override
 	public String insertshopcar(String message) {
@@ -215,7 +221,7 @@ public class MainServiceImpl implements IMainService {
 				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
-			int i = shopcar_mapper.updateByExample(shopcar, example);
+			int i = shopcar_mapper.updateByExampleSelective(shopcar, example);
 			if(i>0) {
 				obj.put("msg", IMyEnums.SUCCEED);
 			}
@@ -450,8 +456,9 @@ public class MainServiceImpl implements IMainService {
 			OrderFormExample example = new OrderFormExample();
 			OrderFormExample.Criteria criteria = example.createCriteria();
 			OrderForm orderForm = new OrderForm();
-			if(json.getString("orderformid") != null&&!"".equals(json.getString("orderformid"))) {
-				criteria.andOrderformidEqualTo(Integer.parseInt(json.getString("orderformid")));
+			if(json.getString("orderno") != null&&!"".equals(json.getString("orderno"))) {
+				System.err.println(json.getString("orderno"));
+				criteria.andOrdernoEqualTo(json.getString("orderno"));
 			}
 			else {
 				obj.put("msg", IMyEnums.FAIL);
@@ -460,11 +467,53 @@ public class MainServiceImpl implements IMainService {
 			if(json.getString("orderformstate") != null&&!"".equals(json.getString("orderformstate"))) {
 				orderForm.setOrderformstate(json.getString("orderformstate"));
 			}
+			if(json.getString("paymoneystate") != null&&!"".equals(json.getString("paymoneystate"))) {
+				orderForm.setPaymoneystate(json.getString("paymoneystate"));
+			}
+			int i = order_form_mapper.updateByExampleSelective(orderForm, example);
+			if(i>0) {
+				obj.put("msg", IMyEnums.SUCCEED);
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+			}
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+	@Override
+	public String updateorderliststatus(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			OrderFormExample example = new OrderFormExample();
+			OrderFormExample.Criteria criteria = example.createCriteria();
+			OrderForm orderForm = new OrderForm();
+			int i = 0;
+			if(json.getString("orderformstate") != null&&!"".equals(json.getString("orderformstate"))) {
+				orderForm.setOrderformstate(json.getString("orderformstate"));
+			}
+			if(json.getString("paymoneystate") != null&&!"".equals(json.getString("paymoneystate"))) {
+				orderForm.setPaymoneystate(json.getString("paymoneystate"));
+			}
+			if(json.getString("ordernos") != null&&!"".equals(json.getString("ordernos"))) {
+				String[] ordernos = json.getString("ordernos").split(";");
+				if(ordernos!=null&&ordernos.length>0) {
+					for(String s:ordernos) {
+						criteria.andOrdernoEqualTo(s);
+						i += order_form_mapper.updateByExampleSelective(orderForm, example);
+						example = new OrderFormExample();
+						criteria = example.createCriteria();
+					}
+				}
+			}
 			else {
 				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
-			int i = order_form_mapper.updateByExample(orderForm, example);
 			if(i>0) {
 				obj.put("msg", IMyEnums.SUCCEED);
 			}
@@ -602,7 +651,7 @@ public class MainServiceImpl implements IMainService {
 				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
-			int i = photo_mapper.updateByExample(photo, example);
+			int i = photo_mapper.updateByExampleSelective(photo, example);
 			if(i>0) {
 				obj.put("msg", IMyEnums.SUCCEED);
 			}
@@ -1112,7 +1161,7 @@ public class MainServiceImpl implements IMainService {
 				obj.put("msg", IMyEnums.FAIL);
 				return obj.toString();
 			}
-			int i = colour_mapper.updateByExample(colour, example);
+			int i = colour_mapper.updateByExampleSelective(colour, example);
 			if(i>0) {
 				obj.put("msg", IMyEnums.SUCCEED);
 			}
@@ -1148,7 +1197,7 @@ public class MainServiceImpl implements IMainService {
 				if(colourids!=null&&colourids.length>0) {
 					for(String id:colourids) {
 						criteria.andBicycleidEqualTo(Integer.parseInt(id));
-						i += colour_mapper.updateByExample(colour, example);
+						i += colour_mapper.updateByExampleSelective(colour, example);
 					}
 				}
 			}
@@ -1785,6 +1834,106 @@ public class MainServiceImpl implements IMainService {
 			long i = shopcar_mapper.countByExample(example);
 			obj.put("shopcarnum", i);
 			obj.put("msg", IMyEnums.SUCCEED);
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+	@Override
+	public String queryorderByUserId(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			obj.put("msg", IMyEnums.SUCCEED);
+			OrderFormExample example = new OrderFormExample();
+			OrderFormExample.Criteria criteria = example.createCriteria();
+			AddressExample example2 = new AddressExample();
+			AddressExample.Criteria criteria2 = example2.createCriteria();
+			if(json.getString("userid")!=null&&!"".equals(json.getString("userid"))) {
+				criteria2.andUseridEqualTo(Integer.parseInt(json.getString("userid")));
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+				return obj.toString();
+			}
+			List<Address> list2 = address_mapper.selectByExample(example2);
+			List<OrderForm> orderformlist = new ArrayList<OrderForm>();
+			if(list2!=null&&list2.size()>0) {
+				for(Address a:list2) {
+					example = new OrderFormExample();
+					criteria = example.createCriteria();
+					criteria.andAdsidEqualTo(a.getAdsid());
+					List<OrderForm> list = order_form_mapper.selectByExample(example);
+					if(list!=null&&list.size()>0) {
+						for(OrderForm o:list) {
+							orderformlist.add(o);
+						}
+					}
+				}
+			}
+			obj.put("OrderFormByUserIdList", orderformlist);
+			obj.put("msg", IMyEnums.SUCCEED);
+		}
+		else {
+			obj.put("msg", IMyEnums.FAIL);
+		}
+		return obj.toString();
+	}
+	@Override
+	public String queryallorder(String message) {
+		JSONObject obj = new JSONObject();
+		JSONObject json = new JSONObject();
+		if(message!=null&&!"".equals(message)) {
+			json = JSONObject.fromObject(message);
+			OrderFormExample example = new OrderFormExample();
+			if(json.getString("pageIndex")!=null&&!"".equals(json.getString("pageIndex"))) {
+				example.setPageIndex(Integer.parseInt(json.getString("pageIndex")));
+			}
+			else {
+				example.setPageIndex(0);
+			}
+			example.setPageSize(10);
+			example.setOrderByClause("createtime asc");
+			List<OrderForm> list = order_form_mapper.selectByExample(example);
+			if(list!=null&&list.size()>0) {
+				for(OrderForm o:list) {
+					OrderFormDetailExample example2 = new OrderFormDetailExample();
+					OrderFormDetailExample.Criteria criteria = example2.createCriteria();
+					criteria.andOrdernoEqualTo(o.getOrderno());
+					List<OrderFormDetail> list2 = order_form_detail_mapper.selectByExample(example2);
+					if(list2!=null&&list2.size()>0) {
+						for(OrderFormDetail d:list2) {
+							Bicycle bicycle = bicycle_mapper.selectByPrimaryKey(d.getBicycleid());
+							PhotoExample example3 = new PhotoExample();
+							PhotoExample.Criteria criteria3 = example3.createCriteria();
+							criteria3.andBicycleidEqualTo(bicycle.getBicycleid());
+							List<Photo> list3 = photo_mapper.selectByExample(example3);
+							bicycle.setPhoto(list3);
+							if(list3!=null&&list3.size()>0) {
+								bicycle.setFirstphoto("http://127.0.0.1:9090/bicycle_pic/"+list3.get(0).getPath());
+							}
+							if(list3!=null&&list3.size()>1) {
+								bicycle.setSecondphoto("http://127.0.0.1:9090/bicycle_pic/"+list3.get(1).getPath());
+							}
+							d.setBicycle(bicycle);
+						}
+					}
+					o.setOrderFormDetails(list2);
+					Address address = address_mapper.selectByPrimaryKey(o.getAdsid());
+					String adsdetails = address_service.getProCityDis(address.getDistrict());
+					address.setAdsdetails(adsdetails+" "+address.getAdsdetails());
+					o.setAddress(address);
+					User user = user_mapper.selectByPrimaryKey(address.getUserid());
+					o.setUser(user);
+				}
+				obj.put("allorderform", list);
+				obj.put("msg", IMyEnums.SUCCEED);
+			}
+			else {
+				obj.put("msg", IMyEnums.FAIL);
+			}
 		}
 		else {
 			obj.put("msg", IMyEnums.FAIL);

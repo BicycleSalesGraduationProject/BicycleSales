@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="BicycleSales:war exploded">
-    <output-path>$PROJECT_DIR$/target/BookShopSystemMaven</output-path>
+    <output-path>$PROJECT_DIR$/target/BicycleSales</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -122,10 +122,12 @@
           <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.2" />
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1.1" />
           <element id="library" level="project" name="Maven: javax.mail:mail:1.4.7" />
+          <element id="library" level="project" name="Maven: com.alipay.sdk:alipay-sdk-java:4.10.140.ALL" />
+          <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk15on:1.62" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/BookShopSystemMaven/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/BicycleSales/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="BicycleSales/web/Web" />
     </root>

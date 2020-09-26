@@ -27,10 +27,10 @@ public class AlipayConfig {
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsfe5XGMHIJ6kMSxqfJ5O2hQs8OgGoXap3jsn1CeUP7t0FHoYEWdUuokjQR/NIUdAWQx9U0I4GqKJJ+pCm2lTuCJ/fXEEvMyJZSbzugw6/rtFhR+lKpRgjf+NMWRM630az+o/M0eOdXaiza+sEGjwKLAYqXjDw3aA89YpDF3livSmRJY8ySOW+p+Q1L+2beB5xdc71NVmAPX2fKKP8cB0qks6xzB3JvV+QVe91Leg1yOsjiSWi5LBOfuV3Y5reEUSEzUkm/hK2kV3AZJZpVx5i1GwZK91yw3GjamxI7EoOyzm8UhxJAxc8gpjaK7ZnyxBEQ/fX+MEuBjGnK/iCthcPQIDAQAB";
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://127.0.0.1/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
+	public static String notify_url = "http://127.0.0.1:9090/BicycleSales/notifyUrl.do";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://127.0.0.1/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
+	public static String return_url = "http://127.0.0.1:9090/BicycleSales/retureUrl.do";
 
 	// 签名方式
 	public static String sign_type = "RSA2";

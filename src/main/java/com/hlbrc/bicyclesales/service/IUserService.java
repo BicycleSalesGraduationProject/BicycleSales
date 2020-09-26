@@ -106,6 +106,12 @@ public interface IUserService {
      * @return
      */
 	public String updateuserpassword(String message);
+	/**
+     * 用户密码修改
+     * @param message
+     * @return
+     */
+	public String updateuserpasswordByEmail(String message);
     /**
      * 用户个人信息查看 通过用户id查看个人信息
      * @param message

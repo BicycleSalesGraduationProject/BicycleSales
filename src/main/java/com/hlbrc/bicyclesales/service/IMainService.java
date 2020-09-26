@@ -204,4 +204,22 @@ public interface IMainService {
 	 * @return
 	 */
 	public String queryshopcarnum(String message);
+	/**
+	 * 通过用户id查询订单
+	 * @param message
+	 * @return
+	 */
+	public String queryorderByUserId(String message);
+	/**
+	 * 查询所有订单
+	 * @param message
+	 * @return
+	 */
+	public String queryallorder(String message);
+	/**
+	 * 批量修改订单状态
+	 * @param message
+	 * @return
+	 */
+	public String updateorderliststatus(String message);
 }

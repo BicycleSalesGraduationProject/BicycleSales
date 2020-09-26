@@ -8,6 +8,7 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="issue" jdbcType="VARCHAR" property="issue" />
     <result column="voiceMessage" jdbcType="VARCHAR" property="voicemessage" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    feedbackId, name, tel, email, issue, voiceMessage
+    feedbackId, name, tel, email, issue, voiceMessage, createTime
   </sql>
   <select id="selectByExample" parameterType="com.hlbrc.bicyclesales.entity.FeedBackExample" resultMap="BaseResultMap">
     select
@@ -84,8 +85,8 @@
       order by ${orderByClause}
     </if>
     <if test="pageIndex != null and pageSize != null and pageSize != 0">
-          limit #{pageIndex},#{pageSize}
-      </if>
+	    limit #{pageIndex},#{pageSize}
+	</if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -105,11 +106,11 @@
   </delete>
   <insert id="insert" parameterType="com.hlbrc.bicyclesales.entity.FeedBack">
     insert into feedback (feedbackId, name, tel, 
-      email, issue, voiceMessage
-      )
+      email, issue, voiceMessage, 
+      createTime)
     values (#{feedbackid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, #{voicemessage,jdbcType=VARCHAR}
-      )
+      #{email,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, #{voicemessage,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hlbrc.bicyclesales.entity.FeedBack">
     insert into feedback
@@ -132,6 +133,9 @@
       <if test="voicemessage != null">
         voiceMessage,
       </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="feedbackid != null">
@@ -151,6 +155,9 @@
       </if>
       <if test="voicemessage != null">
         #{voicemessage,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -181,6 +188,9 @@
       <if test="record.voicemessage != null">
         voiceMessage = #{record.voicemessage,jdbcType=VARCHAR},
       </if>
+      <if test="record.createtime != null">
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -193,7 +203,8 @@
       tel = #{record.tel,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
       issue = #{record.issue,jdbcType=VARCHAR},
-      voiceMessage = #{record.voicemessage,jdbcType=VARCHAR}
+      voiceMessage = #{record.voicemessage,jdbcType=VARCHAR},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -216,6 +227,9 @@
       <if test="voicemessage != null">
         voiceMessage = #{voicemessage,jdbcType=VARCHAR},
       </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where feedbackId = #{feedbackid,jdbcType=INTEGER}
   </update>
@@ -225,7 +239,8 @@
       tel = #{tel,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       issue = #{issue,jdbcType=VARCHAR},
-      voiceMessage = #{voicemessage,jdbcType=VARCHAR}
+      voiceMessage = #{voicemessage,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
     where feedbackId = #{feedbackid,jdbcType=INTEGER}
   </update>
 </mapper>

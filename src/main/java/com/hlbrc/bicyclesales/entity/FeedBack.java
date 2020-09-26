@@ -1,5 +1,7 @@
 package com.hlbrc.bicyclesales.entity;
 
+import java.util.Date;
+
 public class FeedBack {
     private Integer feedbackid;
 
@@ -12,6 +14,8 @@ public class FeedBack {
     private String issue;
 
     private String voicemessage;
+
+    private Date createtime;
 
     public Integer getFeedbackid() {
         return feedbackid;
@@ -59,5 +63,13 @@ public class FeedBack {
 
     public void setVoicemessage(String voicemessage) {
         this.voicemessage = voicemessage == null ? null : voicemessage.trim();
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 }

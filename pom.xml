@@ -262,6 +262,13 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+		<dependency>
+		    <groupId>com.alipay.sdk</groupId>
+		    <artifactId>alipay-sdk-java</artifactId>
+		    <version>4.10.140.ALL</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>BicycleSales</finalName>

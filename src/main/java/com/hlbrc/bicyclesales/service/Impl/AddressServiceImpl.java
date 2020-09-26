@@ -58,6 +58,7 @@ public class AddressServiceImpl implements IAddressService {
 	public String getProCityDis(String disid) {
 		String str = "";
 		if(disid!=null) {
+			System.out.println(Integer.parseInt(disid));
 			District dis = district_mapper.selectByPrimaryKey(Integer.parseInt(disid));
 			City city = city_mapper.selectByPrimaryKey(Integer.parseInt(dis.getCitid()));
 			Privince pri = privince_mapper.selectByPrimaryKey(Integer.parseInt(city.getProid()));
