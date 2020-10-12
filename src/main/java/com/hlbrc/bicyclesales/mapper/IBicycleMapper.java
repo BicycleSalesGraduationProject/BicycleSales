@@ -4,7 +4,6 @@ import com.hlbrc.bicyclesales.entity.Bicycle;
 import com.hlbrc.bicyclesales.entity.BicycleExample;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 
 public interface IBicycleMapper {

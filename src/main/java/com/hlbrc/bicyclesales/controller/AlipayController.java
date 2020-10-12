@@ -20,7 +20,6 @@ import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.hlbrc.bicyclesales.enums.IMyEnums;
 import com.hlbrc.bicyclesales.service.IMainService;
-import com.hlbrc.bicyclesales.service.IUserService;
 import com.hlbrc.bicyclesales.util.AlipayConfig;
 
 import net.sf.json.JSONObject;

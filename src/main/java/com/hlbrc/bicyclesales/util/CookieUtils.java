@@ -1,7 +1,5 @@
 package com.hlbrc.bicyclesales.util;
 
-import org.slf4j.Logger;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
