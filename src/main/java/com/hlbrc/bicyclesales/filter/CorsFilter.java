@@ -11,6 +11,11 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 解决跨域
+ * @author DELL
+ *
+ */
 @WebFilter(filterName="CorsFilter" , urlPatterns="*.do")
 public class CorsFilter implements Filter{
 
